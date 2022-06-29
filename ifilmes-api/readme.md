@@ -11,39 +11,34 @@ para a criação da API foi utilizado Typescript, com a seguinte Stack:
 * Typescript
 * DataBase -> MySQL (em Docker  com Docker Compose).
 * Framework -> AdonisJS (NodeJs 14).
-* Cache -> InMemory (para fins de desenvolvimento)
+* Cache -> Redis (em Docker com Docker Compose)
 
 Requsitos -> 
 * NodeJs 14 LTS
-* Docker (com Docker Compose) para a DB
+* Docker (com Docker Compose) 
 * Insomnia (ou Postman) para testes das rotas.
+
 ## Instalação
 
 Primeiramente Clone o projeto
 
 ```bash
-  git clone https://
+  git clone git@github.com:ericalmeidasp/desafio-itau.git
 ```
 
  entra na pasta do projeto
 
 ```bash
-  cd ifilmes-api
+  cd itau-desafio
 ```
 
-na pasta Raiz do projeto, crie um container Docker com MySQL e a base de dados utilizada.
+na pasta Raiz do projeto, Rode o Docker compose up para startar a DB, Redis e as duas APIs.
 
 ```bash
-  docker-compose up -d
+  docker compose up -d
 ```
 
-Depois, Instale o projeto utilizando npm
-
-```bash
-    npm install
-```
-
-Rode as Migrations para a base de dados:
+Após finalizar as instalações e iniciar a DB, Rode as Migrations para a base de dados:
 
 
 ```bash

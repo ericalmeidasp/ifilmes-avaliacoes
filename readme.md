@@ -11,12 +11,13 @@ para a criação da API foi utilizado Typescript, com a seguinte Stack:
 * Typescript
 * DataBase -> MySQL (em Docker  com Docker Compose).
 * Framework -> AdonisJS (NodeJs 14).
-* Cache -> InMemory (para fins de desenvolvimento)
+* Cache -> Redis (em Docker com Docker Compose)
 
 Requsitos -> 
 * NodeJs 14 LTS
-* Docker (com Docker Compose) para a DB
+* Docker (com Docker Compose) 
 * Insomnia (ou Postman) para testes das rotas.
+
 ## Instalação
 
 Primeiramente Clone o projeto
@@ -28,17 +29,16 @@ Primeiramente Clone o projeto
  entra na pasta do projeto
 
 ```bash
-  cd desafio-itau
+  cd itau-desafio
 ```
 
-na pasta Raiz do projeto, rode o Docker com as aplicações e serviços necessários:
+na pasta Raiz do projeto, Rode o Docker compose up para startar o MySQL, Redis e as duas APIs.
 
 ```bash
-  docker-compose up -d
+  docker compose up 
 ```
 
-Depois, rode as Migrations para a base de dados:
-
+Após finalizar as instalações e iniciar a DB, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up):
 
 ```bash
     docker exec app node migration:run
@@ -47,7 +47,6 @@ Depois, rode as Migrations para a base de dados:
 
 Rode os Seeders testes dos usuários: (opcional)
 
-
 ```bash
     docker exec app node ace db:seed
     docker exec app-auth node ace db:seed
@@ -55,9 +54,6 @@ Rode os Seeders testes dos usuários: (opcional)
 
 Configure as Váriaveis de ambiente (veja seção abaixo) e rode o servidor de desenvolvimento:
 
-```bash
-    npm run dev
-```
 ## Variáveis de Ambiente
 
 Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
@@ -88,7 +84,11 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
 
 `IMDB_URL=https://www.omdbapi.com/?apikey=${IMDB_API_KEY}&`
 
-Ou, renomeie o arquivo .env.example para .env (fique a vontade para alterar o IMDBAPIKEY caso queira, por sua key)
+`SESSION_DRIVER=cookie`
+
+`API_AUTH_URL=http://localhost:3000`
+
+para agilizar, eu não ignorou o .env e já subi aqui no github (fique a vontade para alterar o IMDBAPIKEY caso queira, por sua key)
 
 ## Funcionalidades
 
@@ -169,10 +169,10 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | `email` | `string` | **Obrigatório**. Email do usuário a ser promovido |
 
 
-#### Pesquisa por Filmes -> Retorna uma Array contendo os principais resultados.
+#### Lista e armazena Filmes -> Retorna uma Array contendo os principais resultados.
 
 ```http
-  GET /movies?searchString=string
+  POST /movies?searchString=string
 ```
 
 | Parâmetro   | Tipo       | Descrição                           |
@@ -183,12 +183,12 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 #### Pesquisa por Filme -> Retorna um objeto com as informações do filme pesquisado.
 
 ```http
-  GET /movies/:imdbid
+  GET /movies/:id
 ```
 
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
-| `:imdbid` | `string` | **Obrigatório**. imdbId do filme solicitado |
+| `:id` | `string` | **Obrigatório**. Id do filme solicitado |
 
 
 #### Avalia um filme, enviando uma nota para ele. Retorna um objeto da nota enviada. (ou atualiza uma avaliação existente)
