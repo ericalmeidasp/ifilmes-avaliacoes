@@ -25,7 +25,7 @@ services:
 
   app:
     container_name: app
-    build: ./ifilmes-api
+    build: ./ifilmes-api/
     restart: always
     ports:
       - 3333:3333
@@ -45,3 +45,5 @@ services:
       - db
       - redis-server
     network_mode: host
+  
+
