@@ -1,0 +1,6 @@
+export { default as User } from './User'
+export { default as Movie } from './Movie'
+export { default as Rating } from './Rating'
+export { default as Comment } from './Comment'
+export { default as ReplyComment } from './ReplyComment'
+export { default as Reaction } from './Reaction'
