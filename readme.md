@@ -22,39 +22,35 @@ Requsitos ->
 Primeiramente Clone o projeto
 
 ```bash
-  git clone https://
+  git clone git@github.com:ericalmeidasp/desafio-itau.git
 ```
 
  entra na pasta do projeto
 
 ```bash
-  cd ifilmes-api
+  cd desafio-itau
 ```
 
-na pasta Raiz do projeto, crie um container Docker com MySQL e a base de dados utilizada.
+na pasta Raiz do projeto, rode o Docker com as aplicações e serviços necessários:
 
 ```bash
   docker-compose up -d
 ```
 
-Depois, Instale o projeto utilizando npm
-
-```bash
-    npm install
-```
-
-Rode as Migrations para a base de dados:
+Depois, rode as Migrations para a base de dados:
 
 
 ```bash
-    node ace migration:run
+    docker exec app node migration:run
+    docker exec app-auth node migration:run
 ```
 
 Rode os Seeders testes dos usuários: (opcional)
 
 
 ```bash
-    node ace db:seed
+    docker exec app node ace db:seed
+    docker exec app-auth node ace db:seed
 ```
 
 Configure as Váriaveis de ambiente (veja seção abaixo) e rode o servidor de desenvolvimento:

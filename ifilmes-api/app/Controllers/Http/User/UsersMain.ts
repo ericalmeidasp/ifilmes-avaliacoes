@@ -2,14 +2,16 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import axios from 'axios'
 import { User } from 'App/Models'
 import { StoreValidator } from 'App/Validators/User/Register'
+import Env from '@ioc:Adonis/Core/Env'
 
 export default class RegistersController {
   public async store({ request, response }: HttpContextContract) {
     //valida os dados enviados
     const { email, password, name } = await request.validate(StoreValidator)
 
+    //cria um novo usuário na Api de Autenticação
     const req = await axios
-      .post('http://localhost:3000/register', { email, password, name })
+      .post(`${Env.get('API_AUTH_URL')}/register`, { email, password, name })
       .then(async ({ data }) => {
         await User.create(data)
         return data
@@ -17,8 +19,6 @@ export default class RegistersController {
       .catch((error) => {
         return error.response.data
       })
-
-    //cria um novo usuário
 
     // retorna os dados criados.
     return response.json(req)

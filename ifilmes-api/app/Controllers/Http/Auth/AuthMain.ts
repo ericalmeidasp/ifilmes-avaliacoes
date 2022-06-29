@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { StoreValidator } from 'App/Validators/Auth'
 import axios from 'axios'
+import Env from '@ioc:Adonis/Core/Env'
 
 export default class AuthController {
   public async store({ request, response }: HttpContextContract) {
@@ -8,7 +9,7 @@ export default class AuthController {
     const { email, password } = await request.validate(StoreValidator)
 
     const req = await axios
-      .post('http://localhost:3000/login', { email, password })
+      .post(`${Env.get('API_AUTH_URL')}/login`, { email, password })
       .then(async ({ data }) => {
         return data
       })
@@ -22,7 +23,7 @@ export default class AuthController {
   public async destroy({ request }: HttpContextContract) {
     const token = request.headers().authorization
 
-    await axios.delete('http://localhost:3000/logout', {
+    await axios.delete(`${Env.get('API_AUTH_URL')}/logout`, {
       headers: {
         Authorization: token!,
       },

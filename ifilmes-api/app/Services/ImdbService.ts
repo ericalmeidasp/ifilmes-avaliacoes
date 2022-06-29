@@ -18,17 +18,4 @@ export class ImdbService {
       }
     })
   }
-
-  public static async getMovie(imdbId: string) {
-    //acessa API externa do IMDB e retorna o filme procurado
-    const { data } = await axios.get(`${this.URL_IMDB}i=${imdbId}`)
-
-    return {
-      title: data.Title,
-      year: data.Year,
-      imdbId: data.imdbID,
-      type: data.Type,
-      poster: data.Poster,
-    }
-  }
 }

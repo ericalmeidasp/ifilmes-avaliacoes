@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import axios from 'axios'
 import { User } from 'App/Models'
+import Env from '@ioc:Adonis/Core/Env'
 
 export default class AuthMiddleware {
   public async handle({ request, response, auth }: HttpContextContract, next: () => Promise<void>) {
@@ -11,14 +12,14 @@ export default class AuthMiddleware {
       return
     }
     await axios
-      .get('http://localhost:3000/getuserwithtoken', {
+      .get(`${Env.get('API_AUTH_URL')}/getuserwithtoken`, {
         headers: {
           Authorization: token,
         },
       })
       .then(async ({ data }) => {
         const user = await User.firstOrCreate({ email: data.email }, { name: data.name })
-        auth.login(user)
+        await auth.login(user)
         await next()
       })
       .catch(() => {

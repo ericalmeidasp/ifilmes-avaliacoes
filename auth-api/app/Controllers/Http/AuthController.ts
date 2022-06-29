@@ -30,6 +30,7 @@ export default class AuthController {
   }
 
   public async show({ auth }: HttpContextContract) {
+    //verifica se o usuário está logado e devolve o objeto do usuário.
     return auth.user
   }
 

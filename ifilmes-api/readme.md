@@ -173,10 +173,10 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | `email` | `string` | **Obrigatório**. Email do usuário a ser promovido |
 
 
-#### Pesquisa por Filmes -> Retorna uma Array contendo os principais resultados.
+#### Salva e retorna os Filmes -> Retorna uma Array contendo os principais resultados.
 
 ```http
-  GET /movies?searchString=string
+  POST /movies?searchString=string
 ```
 
 | Parâmetro   | Tipo       | Descrição                           |
@@ -187,12 +187,12 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 #### Pesquisa por Filme -> Retorna um objeto com as informações do filme pesquisado.
 
 ```http
-  GET /movies/:imdbid
+  GET /movies/id
 ```
 
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
-| `:imdbid` | `string` | **Obrigatório**. imdbId do filme solicitado |
+| `:id` | `number` | **Obrigatório**. id do filme solicitado |
 
 
 #### Avalia um filme, enviando uma nota para ele. Retorna um objeto da nota enviada. (ou atualiza uma avaliação existente)
