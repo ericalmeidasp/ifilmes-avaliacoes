@@ -4,7 +4,9 @@ import { PointsService } from 'App/Services/PointsService'
 import { StoreValidator } from 'App/Validators/ReplyComments'
 
 export default class ReplyCommentsController {
-  //criar uma nova resposta a um comentário.
+  /*
+   * Criar uma nova resposta a um comentário.
+   */
   public async store({ request, auth }: HttpContextContract) {
     const data = await request.validate(StoreValidator)
 
@@ -20,6 +22,9 @@ export default class ReplyCommentsController {
     return replyComment
   }
 
+  /*
+   * Apagar uma resposta a um comentário.
+   */
   public async destroy({ response, params }: HttpContextContract) {
     const replyComment = await ReplyComment.findOrFail(params.id)
 

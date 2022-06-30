@@ -5,6 +5,10 @@ import { StoreValidator } from 'App/Validators/User/Register'
 import Env from '@ioc:Adonis/Core/Env'
 
 export default class RegistersController {
+
+  /*
+   * Cria um novo usuário na api de autenticação
+   */
   public async store({ request, response }: HttpContextContract) {
     //valida os dados enviados
     const { email, password, name } = await request.validate(StoreValidator)

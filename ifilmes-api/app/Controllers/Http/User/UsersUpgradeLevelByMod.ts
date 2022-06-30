@@ -4,6 +4,9 @@ import { usersLevelsTypes } from 'App/Utils'
 import { UpdateValidator } from 'App/Validators/User/UpgradeLevel'
 
 export default class UpgradeLevelByModController {
+  /*
+   * upgrade da conta utilizando um moderador
+   */
   public async update({ request, response }: HttpContextContract) {
     //valida os dados
     const { email } = await request.validate(UpdateValidator)

@@ -4,8 +4,10 @@ import { PointsService } from 'App/Services/PointsService'
 import { StoreValidator } from 'App/Validators/Movie'
 
 export default class RatingsController {
-  //cria uma nova avaliação para o filme
-  public async store({ request, auth }: HttpContextContract) {
+  /*
+   * Cria ou atualiza nova avaliação para o filme
+   */
+  public async update({ request, auth }: HttpContextContract) {
     const { movieId, value } = await request.validate(StoreValidator)
 
     // procura o filme com base no movieId enviado

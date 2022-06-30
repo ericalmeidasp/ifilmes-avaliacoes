@@ -1,7 +1,8 @@
 import { User } from 'App/Models'
 
-//pontua o usuário
-
+/*
+ * pontua o usuário
+ */
 export class PointsService {
   public static async GivePoints(user: User) {
     user.userPoints++

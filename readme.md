@@ -92,7 +92,8 @@ para agilizar, eu não ignorou o .env e já subi aqui no github (fique a vontade
 
 ## Funcionalidades
 
-```Ok - LEITOR: Após o cadastro, esse usuário poderá logar e buscar por um filme. Ele poderá ver as informações de um filme, comentários e dar uma nota para o filme. A cada filme que o usuário avaliar, ele ganha 1 ponto em seu perfil.
+```
+Ok - LEITOR: Após o cadastro, esse usuário poderá logar e buscar por um filme. Ele poderá ver as informações de um filme, comentários e dar uma nota para o filme. A cada filme que o usuário avaliar, ele ganha 1 ponto em seu perfil.
 Ok - BÁSICO: O usuário leitor poderá se tornar BÁSICO quando adquirir 20 pontos. Nesse perfil será possível postar comentários, notas e responder comentários. Cada resposta que o usuário enviar, ele ganha 1 ponto.
 Ok - AVANÇADO: O usuário básico poderá se tornar AVANÇADO quando adquirir 100 pontos. Esse perfil tem as capacidades do BÁSICO, e mais citar outros comentários (comentários feitos por outros usuários) e marcar comentários como “gostei” ou "não gostei”.
 Ok - MODERADOR: Um usuário poderá se tornar MODERADOR de 2 formas: um moderador torna outro usuário moderador ou por pontuação, para se tornar MODERADOR o usuário deverá ter 1000 pontos. O moderador tem as capacidades do AVANÇADO, e mais excluir um comentário ou marcar como repetida.
@@ -191,10 +192,10 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | `:id` | `string` | **Obrigatório**. Id do filme solicitado |
 
 
-#### Avalia um filme, enviando uma nota para ele. Retorna um objeto da nota enviada. (ou atualiza uma avaliação existente)
+#### Avalia um filme, atualizando ou criando uma nota para ele. Retorna um objeto da nota. 
 
 ```http
-  POST /rating
+  PUT /rating
 ```
 
 | Parâmetro   | Tipo       | Descrição                           |

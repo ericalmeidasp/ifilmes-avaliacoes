@@ -5,7 +5,9 @@ import { usersLevelsTypes } from 'App/Utils'
 import { StoreValidator } from 'App/Validators/Comments'
 
 export default class CommentsController {
-  //cria um novo comentário
+  /*
+   * Cria um novo comentário
+   */
   public async store({ request, auth }: HttpContextContract) {
     const { movieId, content, wasQuotedId } = await request.validate(StoreValidator)
 
@@ -22,7 +24,9 @@ export default class CommentsController {
 
     // carrega user do comentario e citações
     await comment.load('user', (query) => query.select(['id', 'name', 'email']))
-    await comment.load('wasQuoted')
+    await comment.load('wasQuoted', (query) =>
+      query.preload('user', (query) => query.select(['id', 'name', 'email']))
+    )
 
     //adiciona pontos para o usuário.
     await PointsService.GivePoints(auth.user!)
@@ -30,7 +34,9 @@ export default class CommentsController {
     return comment
   }
 
-  // marca o comentário como duplicado ou desmarca
+  /*
+   * Marca o comentário como duplicado ou desmarca
+   */
   public async update({ params }: HttpContextContract) {
     const comment = await Comment.findOrFail(params.id)
 
@@ -44,7 +50,9 @@ export default class CommentsController {
     return comment
   }
 
-  //apaga o commentário
+  /*
+   * Apaga o commentário
+   */
   public async destroy({ response, params }: HttpContextContract) {
     const comment = await Comment.findOrFail(params.id)
     await comment.delete()

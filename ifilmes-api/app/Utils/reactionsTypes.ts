@@ -1,4 +1,6 @@
-// tipoes permitidos para as reações
+/*
+ * tipos permitidos para as reações
+ */
 
 const reactionsTypes = ['like', 'unlike'] as const
 

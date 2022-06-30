@@ -2,6 +2,9 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { usersLevelsTypes } from 'App/Utils'
 
 export default class UpgradeLevelByPointsController {
+  /*
+   * upgrade da conta utilizando os pontos
+   */
   public async update({ auth, response }: HttpContextContract) {
     //carrega o user autenticado
     const user = auth.user!

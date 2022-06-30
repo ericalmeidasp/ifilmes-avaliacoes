@@ -3,6 +3,9 @@ import { Comment } from 'App/Models'
 import { UpdateValidator } from 'App/Validators/Reactions'
 
 export default class ReactionsController {
+  /*
+   * Atualiza ou cria o relacionamento de reação.
+   */
   public async update({ request, auth }: HttpContextContract) {
     const { type, commentId } = await request.validate(UpdateValidator)
 

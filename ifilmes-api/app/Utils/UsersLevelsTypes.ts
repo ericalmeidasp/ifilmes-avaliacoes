@@ -1,4 +1,6 @@
-// tipos permitidos para os cargos
+/*
+ * tipos permitidos para as cargos
+ */
 
 const usersLevelsTypes = ['leitor', 'basico', 'avancado', 'moderador'] as const
 
