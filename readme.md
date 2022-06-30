@@ -1,22 +1,23 @@
-# API - Projeto BootCamp Itaú Devs Expert - Let's Code. 
+# API - Projeto BootCamp Itaú Devs Expert - Let's Code.
 
 Está a a API do Desafio. um sistema para avaliação de filmes, consumindo API pública do IMDB, e salvando avaliações e comentários em nossa DB.
 
 para a criação da API foi utilizado Typescript, com a seguinte Stack:
 
-
 ## Stack utilizada
 
-**Back-end:** 
-* Typescript
-* DataBase -> MySQL (em Docker  com Docker Compose).
-* Framework -> AdonisJS (NodeJs 14).
-* Cache -> Redis (em Docker com Docker Compose)
+**Back-end:**
 
-Requsitos -> 
-* NodeJs 14 LTS
-* Docker (com Docker Compose) 
-* Insomnia (ou Postman) para testes das rotas.
+- Typescript
+- DataBase -> MySQL (em Docker com Docker Compose).
+- Framework -> AdonisJS (NodeJs 14).
+- Cache -> Redis (em Docker com Docker Compose)
+
+Requsitos ->
+
+- NodeJs 14 LTS ||
+- Docker (com Docker Compose)
+- Insomnia (ou Postman) para testes das rotas.
 
 ## Instalação
 
@@ -26,7 +27,7 @@ Primeiramente Clone o projeto
   git clone git@github.com:ericalmeidasp/desafio-itau.git
 ```
 
- entra na pasta do projeto
+entra na pasta do projeto
 
 ```bash
   cd itau-desafio
@@ -35,28 +36,28 @@ Primeiramente Clone o projeto
 na pasta Raiz do projeto, Rode o Docker compose up para startar o MySQL, Redis e as duas APIs.
 
 ```bash
-  docker compose up 
+  docker compose up
 ```
 
 Após finalizar as instalações e iniciar a DB, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up):
 
 ```bash
-    docker exec app node migration:run
-    docker exec app-auth node migration:run
+  docker exec app node migration:run
+  docker exec app-auth node migration:run
 ```
 
-Rode os Seeders testes dos usuários: (opcional)
+Rode os Seeders para os testes dos usuários:
 
 ```bash
-    docker exec app node ace db:seed
-    docker exec app-auth node ace db:seed
+  docker exec app node ace db:seed
+  docker exec app-auth node ace db:seed
 ```
 
 Configure as Váriaveis de ambiente (veja seção abaixo) e rode o servidor de desenvolvimento:
 
 ## Variáveis de Ambiente
 
-Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
+Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env (para fins de teste, já subi o .env no github)
 
 `PORT=3333`
 
@@ -88,7 +89,7 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
 
 `API_AUTH_URL=http://localhost:3000`
 
-para agilizar, eu não ignorou o .env e já subi aqui no github (fique a vontade para alterar o IMDBAPIKEY caso queira, por sua key)
+(fique a vontade para alterar o IMDBAPIKEY caso queira, por sua key)
 
 ## Funcionalidades
 
@@ -109,12 +110,15 @@ Ok - Um usuário com token invalido não poderá realizar ações no sistema.
 Ok - Todas as tentativas falhas de login devem ser salvas em um cache.
 Ok - Caso um usuário tente 3 vezes logar e erre, na 4 vez deverá ser retornado uma mensagem de “limite de tentativas excedido “
 ```
+
 ## Documentação da API
 
 #### Somente as duas primeiras rotas não são autenticadas `(POST /user/register e POST /auth)` todas as demais são.
+
 #### Existe um Middleware (ACL) para controle dos acessos, seguindos os requisitos.
 
 #
+
 ```
 Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 - leitor@letscode.com.br -> password letscode
@@ -123,34 +127,40 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 - moderador@letscode.com.br -> password letscode
 ```
 
+#### Tabela de paramentro de autenticação
+
+| Parâmetro Header | Tipo parâmetro | Tipo dado | Descrição                                      |
+| :-------------- | :------------- | :-------- | :--------------------------------------------- |
+| `Authorization` | `Bearer`       | `string`  | **Obrigatório para rotas autenticadas**. Utiliza o padrão Bearer Token |
+
 #### Fazer um cadastro -> Retorna um objeto com dados do usuário
 
 ```http
   POST /user/register
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `email` | `string` | **Obrigatório**. email de cadastro |
-| `name` | `string` | **Obrigatório**. nome do usuário |
-| `password` | `string` | **Obrigatório**. senha |
+| Parâmetro              | Tipo     | Descrição                             |
+| :--------------------- | :------- | :------------------------------------ |
+| `email`                | `string` | **Obrigatório**. email de cadastro    |
+| `name`                 | `string` | **Obrigatório**. nome do usuário      |
+| `password`             | `string` | **Obrigatório**. senha                |
 | `passwordConfirmation` | `string` | **Obrigatório**. confirmação da senha |
 
 #### Realizar o Login -> retorna o token de autorização
 
 ```http
-  POST /auth 
+  POST /auth
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `email` | `string` | **Obrigatório**. email do usuário |
+| Parâmetro  | Tipo     | Descrição                         |
+| :--------- | :------- | :-------------------------------- |
+| `email`    | `string` | **Obrigatório**. email do usuário |
 | `password` | `string` | **Obrigatório**. senha do usuário |
 
 #### Realizar o Logout
 
 ```http
-  DELETE /auth  
+  DELETE /auth
 ```
 
 #### Upgrade do nível da conta (Leitor -> Basico -> Avançado -> Moderador) Por Pontos -> Retorna uma string
@@ -162,13 +172,12 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 #### Upgrade do nível da conta (-> Moderador) Por Outra Moderador -> Retorna uma String de sucesso.
 
 ```http
-  PUT /user/upgrade/mod 
+  PUT /user/upgrade/mod
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `email` | `string` | **Obrigatório**. Email do usuário a ser promovido |
-
+| Parâmetro | Tipo     | Descrição                                         |
+| :-------- | :------- | :------------------------------------------------ |
+| `email`   | `string` | **Obrigatório**. Email do usuário a ser promovido |
 
 #### Lista e armazena Filmes -> Retorna uma Array contendo os principais resultados.
 
@@ -176,10 +185,9 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
   POST /movies?searchString=string
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
+| Parâmetro      | Tipo     | Descrição                                         |
+| :------------- | :------- | :------------------------------------------------ |
 | `searchString` | `string` | **Obrigatório**. Palavra para pesquisar os filmes |
-
 
 #### Pesquisa por Filme -> Retorna um objeto com as informações do filme pesquisado.
 
@@ -187,21 +195,20 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
   GET /movies/:id
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `:id` | `string` | **Obrigatório**. Id do filme solicitado |
+| Parâmetro | Tipo     | Descrição                               |
+| :-------- | :------- | :-------------------------------------- |
+| `:id`     | `string` | **Obrigatório**. Id do filme solicitado |
 
-
-#### Avalia um filme, atualizando ou criando uma nota para ele. Retorna um objeto da nota. 
+#### Avalia um filme, atualizando ou criando uma nota para ele. Retorna um objeto da nota.
 
 ```http
   PUT /rating
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `movieId` | `number` | **Obrigatório**. Id do filme  |
-| `value` | `number` | **Obrigatório**. nota do filme |
+| Parâmetro | Tipo     | Descrição                      |
+| :-------- | :------- | :----------------------------- |
+| `movieId` | `number` | **Obrigatório**. Id do filme   |
+| `value`   | `number` | **Obrigatório**. nota do filme |
 
 #### Posta um comentário em algum filme. Retorna um objeto do comentario enviado.
 
@@ -209,11 +216,11 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
   POST /comments
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `movieId` | `number` | **Obrigatório**. Id do filme a comentar |
-| `content` | `string` | **Obrigatório**. Comentario |
-| `wasQuotedId` | `number` | **Opcional**. Id do Comentario Mencionado (caso ele seja Avancado ou Moderador e queira mencionar algum|
+| Parâmetro     | Tipo     | Descrição                                                                                               |
+| :------------ | :------- | :------------------------------------------------------------------------------------------------------ |
+| `movieId`     | `number` | **Obrigatório**. Id do filme a comentar                                                                 |
+| `content`     | `string` | **Obrigatório**. Comentario                                                                             |
+| `wasQuotedId` | `number` | **Opcional**. Id do Comentario Mencionado (caso ele seja Avancado ou Moderador e queira mencionar algum |
 
 #### Marca um comentário como repetido (duplicated). Retorna o objeto do comentário.
 
@@ -221,10 +228,9 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
   PUT /comments/:id
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `:id` | `number` | **Obrigatório**. Id do comentário à sinalizar como repetido |
-
+| Parâmetro | Tipo     | Descrição                                                   |
+| :-------- | :------- | :---------------------------------------------------------- |
+| `:id`     | `number` | **Obrigatório**. Id do comentário à sinalizar como repetido |
 
 #### Apaga um comentário. Retorna uma String de sucesso.
 
@@ -232,10 +238,9 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
   DELETE /comments/:id
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `:id` | `number` | **Obrigatório**. Id do comentário à sinalizar como repetido |
-
+| Parâmetro | Tipo     | Descrição                                                   |
+| :-------- | :------- | :---------------------------------------------------------- |
+| `:id`     | `number` | **Obrigatório**. Id do comentário à sinalizar como repetido |
 
 #### Reage à um comentário (Famoso Like e unLike). Retorna o objeto da reação.
 
@@ -243,10 +248,10 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
   PUT /reactions
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `commentId` | `number` | **Obrigatório**. Id do comentário à Reagir |
-| `type` | `enu('like','unlike')` | **Obrigatório**. Reação ao comentário |
+| Parâmetro   | Tipo                   | Descrição                                  |
+| :---------- | :--------------------- | :----------------------------------------- |
+| `commentId` | `number`               | **Obrigatório**. Id do comentário à Reagir |
+| `type`      | `enu('like','unlike')` | **Obrigatório**. Reação ao comentário      |
 
 #### Responder à um comentário. Retorna o objeto da resposta.
 
@@ -254,10 +259,10 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
   POST /repliescomments
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
+| Parâmetro   | Tipo     | Descrição                                     |
+| :---------- | :------- | :-------------------------------------------- |
 | `commentId` | `number` | **Obrigatório**. Id do comentário à responder |
-| `content` | `string` | **Obrigatório**. Texto da resposta |
+| `content`   | `string` | **Obrigatório**. Texto da resposta            |
 
 #### Apagar resposta à um comentário. Retorna o objeto da resposta.
 
@@ -265,7 +270,6 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
   DELETE /repliescomments/:id
 ```
 
-| Parâmetro   | Tipo       | Descrição                           |
-| :---------- | :--------- | :---------------------------------- |
-| `:id` | `number` | **Obrigatório**. Id da resposta do comentário à apagar |
-
+| Parâmetro | Tipo     | Descrição                                              |
+| :-------- | :------- | :----------------------------------------------------- |
+| `:id`     | `number` | **Obrigatório**. Id da resposta do comentário à apagar |

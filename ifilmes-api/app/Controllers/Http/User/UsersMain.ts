@@ -5,7 +5,6 @@ import { StoreValidator } from 'App/Validators/User/Register'
 import Env from '@ioc:Adonis/Core/Env'
 
 export default class RegistersController {
-
   /*
    * Cria um novo usuário na api de autenticação
    */
@@ -18,10 +17,10 @@ export default class RegistersController {
       .post(`${Env.get('API_AUTH_URL')}/register`, { email, password, name })
       .then(async ({ data }) => {
         await User.create(data)
-        return data
+        return response.status(201).json(data)
       })
       .catch((error) => {
-        return error.response.data
+        return response.json(error.response.data)
       })
 
     // retorna os dados criados.

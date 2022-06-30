@@ -3,6 +3,9 @@ import { StoreValidator } from 'App/Validators/Auth'
 import Cache from '@ioc:Adonis/Addons/Cache'
 
 export default class AuthController {
+  /*
+   * Realiza o login e devolve o token
+   */
   public async store({ request, response, auth }: HttpContextContract) {
     // valida os campos enviados na request
     const { email, password } = await request.validate(StoreValidator)
@@ -29,11 +32,17 @@ export default class AuthController {
     return token
   }
 
+  /*
+   * Autentica o usuário com o token enviado no Header e devolve o usuário
+   */
   public async show({ auth }: HttpContextContract) {
     //verifica se o usuário está logado e devolve o objeto do usuário.
     return auth.user
   }
 
+  /*
+   * Faz o logout do user
+   */
   public async destroy({ auth }: HttpContextContract) {
     await auth.logout()
   }
