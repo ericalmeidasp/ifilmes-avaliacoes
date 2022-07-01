@@ -2,6 +2,13 @@
 
 Está a a API de AUTENTICAÇÃO do Desafio.
 
+também realizei o deploy básico da aplicação, caso queira testar:
+
+```bash
+API Auth
+  http://35.247.213.198:3000/
+```
+
 para a criação da API foi utilizado Typescript, com a seguinte Stack:
 
 ## Stack utilizada
@@ -27,7 +34,7 @@ Requsitos ->
 Primeiramente Clone o projeto
 
 ```bash
-  git clone git@github.com:ericalmeidasp/desafio-itau.git
+  git clone https://github.com/ericalmeidasp/desafio-itau.git
 ```
 
 entra na pasta do projeto e na pasta da Api de autenticação (auth-api)

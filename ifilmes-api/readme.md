@@ -2,6 +2,13 @@
 
 Está a a API do Desafio. um sistema para avaliação de filmes, consumindo API pública do IMDB, e salvando avaliações e comentários em nossa DB.
 
+também realizei o deploy básico das aplicações, caso queira testar:
+
+```bash
+API Principal (ifilmes - comentários e avaliações)
+  http://35.247.213.198:3333/
+```
+
 para a criação da API foi utilizado Typescript, com a seguinte Stack:
 
 ## Stack utilizada
@@ -26,7 +33,7 @@ Requsitos ->
 Primeiramente Clone o projeto
 
 ```bash
-  git clone git@github.com:ericalmeidasp/desafio-itau.git
+  git clone https://github.com/ericalmeidasp/desafio-itau.git
 ```
 
 entra na pasta do projeto e na pasta da Api de comentários (ifilmes-api)
@@ -138,17 +145,28 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 - moderador@letscode.com.br -> password letscode
 ```
 
-#### Tabela de paramentro de autenticação
+#### Tabela de parâmetros de autenticação
 
 | Parâmetro Header | Tipo parâmetro | Tipo dado | Descrição                                                              |
 | :--------------- | :------------- | :-------- | :--------------------------------------------------------------------- |
-| `Authorization`  | `Bearer`       | `string`  | **Obrigatório para rotas autenticadas**. Utiliza o padrão Bearer Token |
+| `Authorization`  | `Bearer`       | `string`  | **Obrigatório para rotas autenticadas**. Utiliza o padrão => 'Bearer ${token}' |
+
+#### Tabela de parâmetros permissões (Acess Controll List)
+
+| ACL userLevel | Permissões |  
+| :------------- | :-------- | 
+| `leitor`  | `Leitor` | 
+| `basico`  | `Básico` | 
+| `avancado`  | `Avançado` | 
+| `moderador`  | `Moderador` | 
 
 #### Fazer um cadastro -> Retorna um objeto com dados do usuário
 
 ```http
   POST /user/register
 ```
+- Rota não autenticada
+- ACL: leitor,basico,avancado,moderador
 
 | Parâmetro              | Tipo     | Descrição                             |
 | :--------------------- | :------- | :------------------------------------ |
@@ -174,6 +192,8 @@ Retorno 201
 ```http
   POST /auth
 ```
+- Rota não autenticada
+- ACL: leitor,basico,avancado,moderador
 
 | Parâmetro  | Tipo     | Descrição                         |
 | :--------- | :------- | :-------------------------------- |
@@ -192,9 +212,13 @@ Retorno 200
 
 #### Realizar o Logout
 
+
+
 ```http
   DELETE /auth
 ```
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
 
 Retorno 200
 
@@ -203,12 +227,14 @@ Retorno 200
 ```http
   PUT /user/upgrade
 ```
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
 
 Retorno 200
 
 ```javascript
-'Upgrade de conta realizado com sucesso, novo nível: ${userLevel}' ||
-  'Usuário não elegível para Upgrade, junte mais Pontos'
+"Upgrade de conta realizado com sucesso, novo nível: ${userLevel}" ||
+  "Usuário não elegível para Upgrade, junte mais Pontos";
 ```
 
 #### Upgrade do nível da conta (-> Moderador) Por Outra Moderador -> Retorna uma String de sucesso.
@@ -216,6 +242,8 @@ Retorno 200
 ```http
   PUT /user/upgrade/mod
 ```
+- Rota Autenticada
+- ACL: moderador
 
 | Parâmetro | Tipo     | Descrição                                         |
 | :-------- | :------- | :------------------------------------------------ |
@@ -224,69 +252,7 @@ Retorno 200
 Retorno 200
 
 ```javascript
-'Usuário promovido a moderador com sucesso'
-```
-
-#### Lista os Filmes em nossa DB -> Retorna uma Array contendo os principais resultados.
-
-```http
-  GET /movies?searchString=string
-```
-
-| Parâmetro      | Tipo     | Descrição                                         |
-| :------------- | :------- | :------------------------------------------------ |
-| `searchString` | `string` | **Obrigatório**. Palavra para pesquisar os filmes |
-
-Retorno 200
-
-```javascript
-;[
-  {
-    id: 1,
-    imdb_id: 'tt0848228',
-    title: 'The Avengers',
-    year: '2012',
-    poster:
-      'https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg',
-    type: 'movie',
-    comments: [
-      {
-        id: 1,
-        content: 'Comentário 1',
-        movie_id: 1,
-        duplicated: 0,
-        created_at: '2022-07-01T00:55:02.000+00:00',
-        updated_at: '2022-07-01T00:55:14.000+00:00',
-        user: {
-          id: 4,
-          name: 'Inara Lima',
-          email: 'moderador@letscode.com.br',
-        },
-        wasQuoted: [],
-        replyComments: [
-          {
-            id: 2,
-            content: 'respondi esse',
-            comment_id: 1,
-            created_at: '2022-07-01T00:55:51.000+00:00',
-            updated_at: '2022-07-01T00:55:51.000+00:00',
-            user: {
-              id: 4,
-              name: 'Inara Lima',
-              email: 'moderador@letscode.com.br',
-            },
-          },
-        ],
-        likeCount: {
-          like: 1,
-          unLike: 0,
-        },
-      },
-    ],
-    myActiveRating: 9,
-    movieRating: '9.00',
-  },
-]
+"Usuário promovido a moderador com sucesso";
 ```
 
 #### Obtem Filmes da API IMDB e Salva os Filmes em nossa DB -> Retorna uma Array contendo os principais resultados.
@@ -294,6 +260,8 @@ Retorno 200
 ```http
   POST /movies?searchString=string
 ```
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
 
 | Parâmetro      | Tipo     | Descrição                                         |
 | :------------- | :------- | :------------------------------------------------ |
@@ -302,40 +270,71 @@ Retorno 200
 Retorno 200
 
 ```javascript
-;[
+[
   {
     id: 1,
-    imdb_id: 'tt0848228',
-    title: 'The Avengers',
-    year: '2012',
+    imdb_id: "tt0848228",
+    title: "The Avengers",
+    year: "2012",
     poster:
-      'https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg',
-    type: 'movie',
+      "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+    type: "movie",
+    comments: [],
+    myActiveRating: null,
+    movieRating: null,
+  },
+];
+```
+
+#### Lista os Filmes em nossa DB -> Retorna uma Array contendo os principais resultados.
+
+```http
+  GET /movies?searchString=string
+```
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
+
+| Parâmetro      | Tipo     | Descrição                                         |
+| :------------- | :------- | :------------------------------------------------ |
+| `searchString` | `string` | **Obrigatório**. Palavra para pesquisar os filmes |
+
+Retorno 200
+
+```javascript
+[
+  {
+    id: 1,
+    imdb_id: "tt0848228",
+    title: "The Avengers",
+    year: "2012",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+    type: "movie",
     comments: [
       {
         id: 1,
-        content: 'Comentário 1',
+        content: "Comentário 1",
         movie_id: 1,
         duplicated: 0,
-        created_at: '2022-07-01T00:55:02.000+00:00',
-        updated_at: '2022-07-01T00:55:14.000+00:00',
+        created_at: "2022-07-01T00:55:02.000+00:00",
+        updated_at: "2022-07-01T00:55:14.000+00:00",
         user: {
           id: 4,
-          name: 'Inara Lima',
-          email: 'moderador@letscode.com.br',
+          name: "Inara Lima",
+          email: "moderador@letscode.com.br",
         },
         wasQuoted: [],
         replyComments: [
           {
             id: 2,
-            content: 'respondi esse',
+            content: "respondi esse",
             comment_id: 1,
-            created_at: '2022-07-01T00:55:51.000+00:00',
-            updated_at: '2022-07-01T00:55:51.000+00:00',
+            created_at: "2022-07-01T00:55:51.000+00:00",
+            updated_at: "2022-07-01T00:55:51.000+00:00",
             user: {
               id: 4,
-              name: 'Inara Lima',
-              email: 'moderador@letscode.com.br',
+              name: "Inara Lima",
+              email: "moderador@letscode.com.br",
             },
           },
         ],
@@ -346,9 +345,9 @@ Retorno 200
       },
     ],
     myActiveRating: 9,
-    movieRating: '9.00',
+    movieRating: "9.00",
   },
-]
+];
 ```
 
 #### Pesquisa por Filme -> Retorna um objeto com as informações do filme pesquisado e todas informações referentes à ele (avaliações, comentarios, etc.).
@@ -356,6 +355,8 @@ Retorno 200
 ```http
   GET /movies/:id
 ```
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
 
 | Parâmetro | Tipo     | Descrição                               |
 | :-------- | :------- | :-------------------------------------- |
@@ -365,49 +366,50 @@ Retorno 200 OK || 400 BadRequest
 
 ```javascript
 {
-		"id": 1,
-		"imdb_id": "tt0848228",
-		"title": "The Avengers",
-		"year": "2012",
-		"poster": "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
-		"type": "movie",
-		"comments": [
-			{
-				"id": 1,
-				"content": "Comentário 1",
-				"movie_id": 1,
-				"duplicated": 0,
-				"created_at": "2022-07-01T00:55:02.000+00:00",
-				"updated_at": "2022-07-01T00:55:14.000+00:00",
-				"user": {
-					"id": 4,
-					"name": "Inara Lima",
-					"email": "moderador@letscode.com.br"
-				},
-				"wasQuoted": [],
-				"replyComments": [
-					{
-						"id": 2,
-						"content": "respondi esse",
-						"comment_id": 1,
-						"created_at": "2022-07-01T00:55:51.000+00:00",
-						"updated_at": "2022-07-01T00:55:51.000+00:00",
-						"user": {
-							"id": 4,
-							"name": "Inara Lima",
-							"email": "moderador@letscode.com.br"
-						}
-					}
-				],
-				"likeCount": {
-					"like": 1,
-					"unLike": 0
-				}
-			}
-		],
-		"myActiveRating": 9,
-		"movieRating": "9.00"
-	}
+    id: 1,
+    imdb_id: "tt0848228",
+    title: "The Avengers",
+    year: "2012",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+    type: "movie",
+    comments: [
+      {
+        id: 1,
+        content: "Comentário 1",
+        movie_id: 1,
+        duplicated: 0,
+        created_at: "2022-07-01T00:55:02.000+00:00",
+        updated_at: "2022-07-01T00:55:14.000+00:00",
+        user: {
+          id: 4,
+          name: "Inara Lima",
+          email: "moderador@letscode.com.br",
+        },
+        wasQuoted: [],
+        replyComments: [
+          {
+            id: 2,
+            content: "respondi esse",
+            comment_id: 1,
+            created_at: "2022-07-01T00:55:51.000+00:00",
+            updated_at: "2022-07-01T00:55:51.000+00:00",
+            user: {
+              id: 4,
+              name: "Inara Lima",
+              email: "moderador@letscode.com.br",
+            },
+          },
+        ],
+        likeCount: {
+          like: 1,
+          unLike: 0,
+        },
+      },
+    ],
+    myActiveRating: 9,
+    movieRating: "9.00",
+  }
 ```
 
 #### Avalia um filme, atualizando ou criando uma nota para ele. Retorna um objeto da nota.
@@ -415,6 +417,8 @@ Retorno 200 OK || 400 BadRequest
 ```http
   PUT /rating
 ```
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
 
 | Parâmetro | Tipo     | Descrição                      |
 | :-------- | :------- | :----------------------------- |
@@ -439,6 +443,8 @@ Retorno 200 OK || 400 BadRequest
 ```http
   POST /comments
 ```
+- Rota Autenticada
+- ACL: basico,avancado,moderador
 
 | Parâmetro     | Tipo     | Descrição                                                                                               |
 | :------------ | :------- | :------------------------------------------------------------------------------------------------------ |
@@ -473,6 +479,8 @@ Retorno 200 OK || 400 BadRequest
 ```http
   PUT /comments/:id
 ```
+- Rota Autenticada
+- ACL: moderador
 
 | Parâmetro | Tipo     | Descrição                                                   |
 | :-------- | :------- | :---------------------------------------------------------- |
@@ -500,6 +508,8 @@ Retorno 200 OK || 400 BadRequest
 ```http
   DELETE /comments/:id
 ```
+- Rota Autenticada
+- ACL: moderador
 
 | Parâmetro | Tipo     | Descrição                                                   |
 | :-------- | :------- | :---------------------------------------------------------- |
@@ -508,7 +518,7 @@ Retorno 200 OK || 400 BadRequest
 Retorno 200 OK || 400 BadRequest
 
 ```javascript
-'Comentário Apagado com Sucesso'
+"Comentário Apagado com Sucesso";
 ```
 
 #### Reage à um comentário (Famoso Like e unLike). Retorna o objeto da reação.
@@ -516,6 +526,8 @@ Retorno 200 OK || 400 BadRequest
 ```http
   PUT /reactions
 ```
+- Rota Autenticada
+- ACL: avancado,moderador
 
 | Parâmetro   | Tipo                   | Descrição                                  |
 | :---------- | :--------------------- | :----------------------------------------- |
@@ -537,6 +549,8 @@ Retorno 200 OK || 400 BadRequest
 ```http
   POST /repliescomments
 ```
+- Rota Autenticada
+- ACL: basico,avancado,moderador
 
 | Parâmetro   | Tipo     | Descrição                                     |
 | :---------- | :------- | :-------------------------------------------- |
@@ -565,6 +579,8 @@ Retorno 200 OK || 400 BadRequest
 ```http
   DELETE /repliescomments/:id
 ```
+- Rota Autenticada
+- ACL: moderador
 
 | Parâmetro | Tipo     | Descrição                                              |
 | :-------- | :------- | :----------------------------------------------------- |
@@ -573,5 +589,5 @@ Retorno 200 OK || 400 BadRequest
 Retorno 200 OK || 400 BadRequest
 
 ```javascript
-'Comentário Apagado com Sucesso'
+"Comentário Apagado com Sucesso";
 ```

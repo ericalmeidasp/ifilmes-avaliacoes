@@ -5,6 +5,13 @@ Está é o Desafio. um sistema para avaliação de filmes, consumindo API públi
 Neste projeto tem um docker-compose.yml, já com todas as imagens necessárias e com o start das duas APIs. Abaixo segue os passos para instalação.
 (caso opte por iniciar o servidor de desenvolvimento das APIs em separado, na pasta de cada API tem o passo-a-passo também)
 
+também realizei o deploy básico das aplicações, caso queira testar:
+
+```bash
+API Principal (ifilmes - comentários e avaliações - a de auth está na porta 3000)
+  http://35.247.213.198:3333/
+```
+
 para a criação da API foi utilizado Typescript, com a seguinte Stack:
 
 ## Stack utilizada
@@ -12,11 +19,11 @@ para a criação da API foi utilizado Typescript, com a seguinte Stack:
 **Back-end:**
 
 - Typescript
-- DataBase -> MySQL (em Docker com Docker Compose).
 - Framework -> AdonisJS (NodeJs 14).
+- DataBase -> MySQL (em Docker com Docker Compose).
 - Cache -> Redis (em Docker com Docker Compose) - API de Auth.
 
-Requsitos ->
+Requisitos ->
 
 - Portas 3333 e 3000 Liberadas.
 - Docker (com Docker Compose)
@@ -27,7 +34,7 @@ Requsitos ->
 Primeiramente Clone o projeto
 
 ```bash
-  git clone git@github.com:ericalmeidasp/desafio-itau.git
+  git clone https://github.com/ericalmeidasp/desafio-itau.git
 ```
 
 Entre na pasta do raiz projeto
@@ -42,7 +49,7 @@ Na pasta Raiz do projeto, Rode o Docker compose up para startar o MySQL, Redis e
   docker compose up -d
 ```
 
-Após finalizar as instalações e iniciar a DB, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up) (já subi no git as variáves - .env - para facilitar, então, é só rodar :)
+Após finalizar as instalações e iniciar as aplicações, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up) (já subi no git as variáves - .env - para facilitar, então, é só rodar :)
 
 ```bash
   docker exec app node ace migration:run
@@ -59,7 +66,13 @@ Rode os Seeders para os testes dos usuários:
 Agora é só começar os testes :)
 
 ```bash
+API Principal (ifilmes - comentários e avaliações)
   http://localhost:3333/
+```
+
+```bash
+API de Autenticação (auth-api) (caso queira testar separada, mas já está integrada na principal)
+  http://localhost:3000/
 ```
 
 ## Funcionalidades
@@ -98,17 +111,29 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 - moderador@letscode.com.br -> password letscode
 ```
 
-#### Tabela de paramentro de autenticação
+#### Tabela de parâmetros de autenticação
 
-| Parâmetro Header | Tipo parâmetro | Tipo dado | Descrição                                                              |
-| :--------------- | :------------- | :-------- | :--------------------------------------------------------------------- |
-| `Authorization`  | `Bearer`       | `string`  | **Obrigatório para rotas autenticadas**. Utiliza o padrão Bearer Token |
+| Parâmetro Header | Tipo parâmetro | Tipo dado | Descrição                                                                                                                              |
+| :--------------- | :------------- | :-------- | :------------------------------------------------------------------------------------------------------------------------------------- |
+| `Authorization`  | `Bearer`       | `string`  | **Obrigatório para rotas autenticadas**. Utiliza o padrão => 'Bearer MTU.aKqvAG7GjM4m-5LBsINLnyKKv-NhPwDehSftqFDlCKW-YZ3WB-VhwRRh4aNa' |
+
+#### Tabela de parâmetros permissões (Acess Controll List)
+
+| ACL userLevel | Permissões  |
+| :------------ | :---------- |
+| `leitor`      | `Leitor`    |
+| `basico`      | `Básico`    |
+| `avancado`    | `Avançado`  |
+| `moderador`   | `Moderador` |
 
 #### Fazer um cadastro -> Retorna um objeto com dados do usuário
 
 ```http
   POST /user/register
 ```
+
+- Rota não autenticada
+- ACL: leitor,basico,avancado,moderador
 
 | Parâmetro              | Tipo     | Descrição                             |
 | :--------------------- | :------- | :------------------------------------ |
@@ -135,6 +160,9 @@ Retorno 201
   POST /auth
 ```
 
+- Rota não autenticada
+- ACL: leitor,basico,avancado,moderador
+
 | Parâmetro  | Tipo     | Descrição                         |
 | :--------- | :------- | :-------------------------------- |
 | `email`    | `string` | **Obrigatório**. email do usuário |
@@ -156,6 +184,9 @@ Retorno 200
   DELETE /auth
 ```
 
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
+
 Retorno 200
 
 #### Upgrade do nível da conta (Leitor -> Basico -> Avançado -> Moderador) Por Pontos -> Retorna uma string
@@ -163,6 +194,9 @@ Retorno 200
 ```http
   PUT /user/upgrade
 ```
+
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
 
 Retorno 200
 
@@ -176,6 +210,9 @@ Retorno 200
 ```http
   PUT /user/upgrade/mod
 ```
+
+- Rota Autenticada
+- ACL: moderador
 
 | Parâmetro | Tipo     | Descrição                                         |
 | :-------- | :------- | :------------------------------------------------ |
@@ -192,6 +229,9 @@ Retorno 200
 ```http
   POST /movies?searchString=string
 ```
+
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
 
 | Parâmetro      | Tipo     | Descrição                                         |
 | :------------- | :------- | :------------------------------------------------ |
@@ -221,6 +261,9 @@ Retorno 200
 ```http
   GET /movies?searchString=string
 ```
+
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
 
 | Parâmetro      | Tipo     | Descrição                                         |
 | :------------- | :------- | :------------------------------------------------ |
@@ -284,6 +327,9 @@ Retorno 200
   GET /movies/:id
 ```
 
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
+
 | Parâmetro | Tipo     | Descrição                               |
 | :-------- | :------- | :-------------------------------------- |
 | `:id`     | `string` | **Obrigatório**. Id do filme solicitado |
@@ -344,6 +390,9 @@ Retorno 200 OK || 400 BadRequest
   PUT /rating
 ```
 
+- Rota Autenticada
+- ACL: leitor,basico,avancado,moderador
+
 | Parâmetro | Tipo     | Descrição                      |
 | :-------- | :------- | :----------------------------- |
 | `movieId` | `number` | **Obrigatório**. Id do filme   |
@@ -367,6 +416,9 @@ Retorno 200 OK || 400 BadRequest
 ```http
   POST /comments
 ```
+
+- Rota Autenticada
+- ACL: basico,avancado,moderador
 
 | Parâmetro     | Tipo     | Descrição                                                                                               |
 | :------------ | :------- | :------------------------------------------------------------------------------------------------------ |
@@ -402,6 +454,9 @@ Retorno 200 OK || 400 BadRequest
   PUT /comments/:id
 ```
 
+- Rota Autenticada
+- ACL: moderador
+
 | Parâmetro | Tipo     | Descrição                                                   |
 | :-------- | :------- | :---------------------------------------------------------- |
 | `:id`     | `number` | **Obrigatório**. Id do comentário à sinalizar como repetido |
@@ -429,6 +484,9 @@ Retorno 200 OK || 400 BadRequest
   DELETE /comments/:id
 ```
 
+- Rota Autenticada
+- ACL: moderador
+
 | Parâmetro | Tipo     | Descrição                                                   |
 | :-------- | :------- | :---------------------------------------------------------- |
 | `:id`     | `number` | **Obrigatório**. Id do comentário à sinalizar como repetido |
@@ -444,6 +502,9 @@ Retorno 200 OK || 400 BadRequest
 ```http
   PUT /reactions
 ```
+
+- Rota Autenticada
+- ACL: avancado,moderador
 
 | Parâmetro   | Tipo                   | Descrição                                  |
 | :---------- | :--------------------- | :----------------------------------------- |
@@ -465,6 +526,9 @@ Retorno 200 OK || 400 BadRequest
 ```http
   POST /repliescomments
 ```
+
+- Rota Autenticada
+- ACL: basico,avancado,moderador
 
 | Parâmetro   | Tipo     | Descrição                                     |
 | :---------- | :------- | :-------------------------------------------- |
@@ -493,6 +557,9 @@ Retorno 200 OK || 400 BadRequest
 ```http
   DELETE /repliescomments/:id
 ```
+
+- Rota Autenticada
+- ACL: moderador
 
 | Parâmetro | Tipo     | Descrição                                              |
 | :-------- | :------- | :----------------------------------------------------- |
