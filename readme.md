@@ -575,3 +575,7 @@ Inclui aqui na pasta raiz, um arquivo Json do Insomnia, caso queira facilitar as
 ```bash
   Insomnia_API-iFilmes.json
 ```
+Para incluir, é só ir em -> Preferences -> Data -> Import Data -> From File, e selecionar o arquivo json.
+
+## Gratidão.
+Desde já, fica meu muito obrigado por essa oportunidade.
