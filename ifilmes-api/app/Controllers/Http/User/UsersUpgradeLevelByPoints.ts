@@ -22,11 +22,17 @@ export default class UpgradeLevelByPointsController {
     } else if (user.userPoints >= 20) {
       user.userLevel = usersLevelsTypes[1]
     } else {
-      return response.json('Usuário não elegível para Upgrade, junte mais Pontos')
+      return response.json({
+        responseText: 'Usuário não elegível para Upgrade, junte mais Pontos.',
+        userPoints: user.userPoints
+      })
     }
     user.save()
 
     // retorna menssagem de sucesso.
-    return response.json(`Upgrade de conta realizado com sucesso, novo nível: ${user.userLevel}`)
+    return response.json({
+      responseText: 'Upgrade de conta realizado com sucesso',
+      userLevel: user.userLevel
+    })
   }
 }
