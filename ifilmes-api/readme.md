@@ -4,10 +4,10 @@ Está a a API do Desafio. um sistema para avaliação de filmes, consumindo API 
 
 também realizei o deploy básico das aplicações, caso queira testar:
 
-```bash
-API Principal (ifilmes - comentários e avaliações)
-  http://35.247.213.198:3333/
-```
+
+- API Principal (ifilmes - comentários e avaliações)
+
+http://35.247.213.198:3333/
 
 para a criação da API foi utilizado Typescript, com a seguinte Stack:
 
@@ -18,7 +18,7 @@ para a criação da API foi utilizado Typescript, com a seguinte Stack:
 - Typescript
 - DataBase -> MySQL (em Docker com Docker Compose).
 - Framework -> AdonisJS (NodeJs 14).
-- Cache -> Redis (em Docker com Docker Compose)
+- Cache -> Redis (em Docker com Docker Compose - para a API de Autenticação)
 
 Requsitos ->
 
