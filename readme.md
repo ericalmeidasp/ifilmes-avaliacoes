@@ -193,7 +193,7 @@ Retorno 200
 
 Retorno 200
 
-#### Upgrade do nível da conta (Leitor -> Basico -> Avançado -> Moderador) Por Pontos -> Retorna uma string
+#### Upgrade do nível da conta (Leitor -> Basico -> Avançado -> Moderador) Por Pontos -> Retorna um objeto
 
 ```http
   PUT /user/upgrade
@@ -205,8 +205,10 @@ Retorno 200
 Retorno 200
 
 ```javascript
-"Upgrade de conta realizado com sucesso, novo nível: ${userLevel}" ||
-  "Usuário não elegível para Upgrade, junte mais Pontos";
+{
+	"responseText": "Usuário não elegível para Upgrade, junte mais Pontos.",
+	"userPoints": 1
+}
 ```
 
 #### Upgrade do nível da conta (-> Moderador) Por Outra Moderador -> Retorna uma String de sucesso.
