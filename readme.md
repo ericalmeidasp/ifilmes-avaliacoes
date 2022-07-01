@@ -7,10 +7,9 @@ Neste projeto tem um docker-compose.yml, já com todas as imagens necessárias e
 
 também realizei o deploy básico das aplicações, caso queira testar:
 
-```bash
 API Principal (ifilmes - comentários e avaliações - a de auth está na porta 3000)
-  http://35.247.213.198:3333/
-```
+
+- http://35.247.213.198:3333/
 
 para a criação da API foi utilizado Typescript, com a seguinte Stack:
 
@@ -65,14 +64,12 @@ Rode os Seeders para os testes dos usuários:
 
 Agora é só começar os testes :)
 
-```bash
-API Principal (ifilmes - comentários e avaliações)
-  http://localhost:3333/
 ```
+- API Principal (ifilmes - comentários e avaliações)
+- http://localhost:3333/
 
-```bash
-API de Autenticação (auth-api) (caso queira testar separada, mas já está integrada na principal)
-  http://localhost:3000/
+- API de Autenticação (auth-api) (caso queira testar separada, mas já está integrada na principal)
+- http://localhost:3000/
 ```
 
 ## Funcionalidades
