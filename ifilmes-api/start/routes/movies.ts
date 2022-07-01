@@ -5,6 +5,12 @@ import Route from '@ioc:Adonis/Core/Route'
  *
  */
 
+// Lista filmes relacionados em nossa DB, utilizando os middlewares ACL e Auth
+Route.get('/movies', 'Movie/MoviesMain.index').middleware([
+  'acl:leitor,basico,avancado,moderador',
+  'auth',
+])
+
 // Salva e lista os filmes realicionados, utilizando os middlewares ACL e Auth
 Route.post('/movies', 'Movie/MoviesMain.store').middleware([
   'acl:leitor,basico,avancado,moderador',

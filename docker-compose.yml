@@ -45,5 +45,3 @@ services:
       - db
       - redis-server
     network_mode: host
-  
-

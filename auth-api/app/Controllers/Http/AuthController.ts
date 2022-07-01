@@ -28,8 +28,8 @@ export default class AuthController {
         response.badRequest(error)
       })
 
-    // caso de tudo certo, retorna o token
-    return token
+    // caso de tudo certo, retorna o token e o user
+    return [token, auth.user]
   }
 
   /*

@@ -1,6 +1,9 @@
 # API - Projeto BootCamp Itaú Devs Expert - Let's Code.
 
-Está a a API do Desafio. um sistema para avaliação de filmes, consumindo API pública do IMDB, e salvando avaliações e comentários em nossa DB.
+Está é o Desafio. um sistema para avaliação de filmes, consumindo API pública do IMDB, e salvando avaliações e comentários em nossa DB. Utilizando uma segunda API para autenticação.
+
+Neste projeto tem um docker-compose.yml, já com todas as imagens necessárias e com o start das duas APIs. Abaixo segue os passos para instalação.
+(caso opte por iniciar o servidor de desenvolvimento das APIs em separado, na pasta de cada API tem o passo-a-passo também)
 
 para a criação da API foi utilizado Typescript, com a seguinte Stack:
 
@@ -11,11 +14,11 @@ para a criação da API foi utilizado Typescript, com a seguinte Stack:
 - Typescript
 - DataBase -> MySQL (em Docker com Docker Compose).
 - Framework -> AdonisJS (NodeJs 14).
-- Cache -> Redis (em Docker com Docker Compose)
+- Cache -> Redis (em Docker com Docker Compose) - API de Auth.
 
 Requsitos ->
 
-- NodeJs 14 LTS ||
+- Portas 3333 e 3000 Liberadas.
 - Docker (com Docker Compose)
 - Insomnia (ou Postman) para testes das rotas.
 
@@ -27,19 +30,19 @@ Primeiramente Clone o projeto
   git clone git@github.com:ericalmeidasp/desafio-itau.git
 ```
 
-entra na pasta do projeto
+Entre na pasta do raiz projeto
 
 ```bash
-  cd itau-desafio
+  cd desafio-itau
 ```
 
-na pasta Raiz do projeto, Rode o Docker compose up para startar o MySQL, Redis e as duas APIs.
+Na pasta Raiz do projeto, Rode o Docker compose up para startar o MySQL, Redis e as duas APIs.
 
 ```bash
-  docker compose up
+  docker compose up -d
 ```
 
-Após finalizar as instalações e iniciar a DB, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up):
+Após finalizar as instalações e iniciar a DB, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up) (já subi no git as variáves - .env - para facilitar):
 
 ```bash
   docker exec app node migration:run
@@ -53,43 +56,11 @@ Rode os Seeders para os testes dos usuários:
   docker exec app-auth node ace db:seed
 ```
 
-Configure as Váriaveis de ambiente (veja seção abaixo) e rode o servidor de desenvolvimento:
+Agora é só começar os testes :)
 
-## Variáveis de Ambiente
-
-Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env (para fins de teste, já subi o .env no github)
-
-`PORT=3333`
-
-`HOST=0.0.0.0`
-
-`NODE_ENV=development`
-
-`APP_KEY=OE-5GiLyvZkePqVIVMpH4BXb15HtCZ9H`
-
-`DRIVE_DISK=local`
-
-`DB_CONNECTION=mysql`
-
-`MYSQL_HOST=localhost`
-
-`MYSQL_PORT=3306`
-
-`MYSQL_USER=root`
-
-`MYSQL_PASSWORD=secret`
-
-`MYSQL_DB_NAME=ifilmes`
-
-`IMDB_API_KEY=335c0da8`
-
-`IMDB_URL=https://www.omdbapi.com/?apikey=${IMDB_API_KEY}&`
-
-`SESSION_DRIVER=cookie`
-
-`API_AUTH_URL=http://localhost:3000`
-
-(fique a vontade para alterar o IMDBAPIKEY caso queira, por sua key)
+```bash
+  http://localhost:3333/
+```
 
 ## Funcionalidades
 
@@ -129,9 +100,9 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 
 #### Tabela de paramentro de autenticação
 
-| Parâmetro Header | Tipo parâmetro | Tipo dado | Descrição                                      |
-| :-------------- | :------------- | :-------- | :--------------------------------------------- |
-| `Authorization` | `Bearer`       | `string`  | **Obrigatório para rotas autenticadas**. Utiliza o padrão Bearer Token |
+| Parâmetro Header | Tipo parâmetro | Tipo dado | Descrição                                                              |
+| :--------------- | :------------- | :-------- | :--------------------------------------------------------------------- |
+| `Authorization`  | `Bearer`       | `string`  | **Obrigatório para rotas autenticadas**. Utiliza o padrão Bearer Token |
 
 #### Fazer um cadastro -> Retorna um objeto com dados do usuário
 
@@ -146,6 +117,18 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | `password`             | `string` | **Obrigatório**. senha                |
 | `passwordConfirmation` | `string` | **Obrigatório**. confirmação da senha |
 
+Retorno 201
+
+```javascript
+{
+	"email": "eric@letscode.com.br",
+	"name": "Éric Almeida",
+	"created_at": "2022-06-30T19:38:31.893-03:00",
+	"updated_at": "2022-06-30T19:38:31.893-03:00",
+	"id": 5
+}
+```
+
 #### Realizar o Login -> retorna o token de autorização
 
 ```http
@@ -157,16 +140,35 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | `email`    | `string` | **Obrigatório**. email do usuário |
 | `password` | `string` | **Obrigatório**. senha do usuário |
 
+Retorno 200
+
+```javascript
+{
+	"type": "bearer",
+	"token": "MTU.aKqvAG7GjM4m-5LBsINLnyKKv-NhPwDehSftqFDlCKW-YZ3WB-VhwRRh4aNa",
+	"expires_at": "2022-07-30T19:40:18.244-03:00"
+}
+```
+
 #### Realizar o Logout
 
 ```http
   DELETE /auth
 ```
 
+Retorno 200
+
 #### Upgrade do nível da conta (Leitor -> Basico -> Avançado -> Moderador) Por Pontos -> Retorna uma string
 
 ```http
   PUT /user/upgrade
+```
+
+Retorno 200
+
+```javascript
+"Upgrade de conta realizado com sucesso, novo nível: ${userLevel}" ||
+  "Usuário não elegível para Upgrade, junte mais Pontos";
 ```
 
 #### Upgrade do nível da conta (-> Moderador) Por Outra Moderador -> Retorna uma String de sucesso.
@@ -179,7 +181,13 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | :-------- | :------- | :------------------------------------------------ |
 | `email`   | `string` | **Obrigatório**. Email do usuário a ser promovido |
 
-#### Lista e armazena Filmes -> Retorna uma Array contendo os principais resultados.
+Retorno 200
+
+```javascript
+"Usuário promovido a moderador com sucesso";
+```
+
+#### Obtem Filmes da API IMDB e Salva os Filmes em nossa DB -> Retorna uma Array contendo os principais resultados.
 
 ```http
   POST /movies?searchString=string
@@ -189,7 +197,121 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | :------------- | :------- | :------------------------------------------------ |
 | `searchString` | `string` | **Obrigatório**. Palavra para pesquisar os filmes |
 
-#### Pesquisa por Filme -> Retorna um objeto com as informações do filme pesquisado.
+Retorno 200
+
+```javascript
+[
+  {
+    id: 1,
+    imdb_id: "tt0848228",
+    title: "The Avengers",
+    year: "2012",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+    type: "movie",
+    comments: [
+      {
+        id: 1,
+        content: "Comentário 1",
+        movie_id: 1,
+        duplicated: 0,
+        created_at: "2022-07-01T00:55:02.000+00:00",
+        updated_at: "2022-07-01T00:55:14.000+00:00",
+        user: {
+          id: 4,
+          name: "Inara Lima",
+          email: "moderador@letscode.com.br",
+        },
+        wasQuoted: [],
+        replyComments: [
+          {
+            id: 2,
+            content: "respondi esse",
+            comment_id: 1,
+            created_at: "2022-07-01T00:55:51.000+00:00",
+            updated_at: "2022-07-01T00:55:51.000+00:00",
+            user: {
+              id: 4,
+              name: "Inara Lima",
+              email: "moderador@letscode.com.br",
+            },
+          },
+        ],
+        likeCount: {
+          like: 1,
+          unLike: 0,
+        },
+      },
+    ],
+    myActiveRating: 9,
+    movieRating: "9.00",
+  },
+];
+```
+
+#### Lista os Filmes em nossa DB -> Retorna uma Array contendo os principais resultados.
+
+```http
+  GET /movies?searchString=string
+```
+
+| Parâmetro      | Tipo     | Descrição                                         |
+| :------------- | :------- | :------------------------------------------------ |
+| `searchString` | `string` | **Obrigatório**. Palavra para pesquisar os filmes |
+
+Retorno 200
+
+```javascript
+[
+  {
+    id: 1,
+    imdb_id: "tt0848228",
+    title: "The Avengers",
+    year: "2012",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+    type: "movie",
+    comments: [
+      {
+        id: 1,
+        content: "Comentário 1",
+        movie_id: 1,
+        duplicated: 0,
+        created_at: "2022-07-01T00:55:02.000+00:00",
+        updated_at: "2022-07-01T00:55:14.000+00:00",
+        user: {
+          id: 4,
+          name: "Inara Lima",
+          email: "moderador@letscode.com.br",
+        },
+        wasQuoted: [],
+        replyComments: [
+          {
+            id: 2,
+            content: "respondi esse",
+            comment_id: 1,
+            created_at: "2022-07-01T00:55:51.000+00:00",
+            updated_at: "2022-07-01T00:55:51.000+00:00",
+            user: {
+              id: 4,
+              name: "Inara Lima",
+              email: "moderador@letscode.com.br",
+            },
+          },
+        ],
+        likeCount: {
+          like: 1,
+          unLike: 0,
+        },
+      },
+    ],
+    myActiveRating: 9,
+    movieRating: "9.00",
+  },
+];
+```
+
+#### Pesquisa por Filme -> Retorna um objeto com as informações do filme pesquisado e todas informações referentes à ele (avaliações, comentarios, etc.).
 
 ```http
   GET /movies/:id
@@ -198,6 +320,55 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | Parâmetro | Tipo     | Descrição                               |
 | :-------- | :------- | :-------------------------------------- |
 | `:id`     | `string` | **Obrigatório**. Id do filme solicitado |
+
+Retorno 200 OK || 400 BadRequest
+
+```javascript
+{
+		"id": 1,
+		"imdb_id": "tt0848228",
+		"title": "The Avengers",
+		"year": "2012",
+		"poster": "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+		"type": "movie",
+		"comments": [
+			{
+				"id": 1,
+				"content": "Comentário 1",
+				"movie_id": 1,
+				"duplicated": 0,
+				"created_at": "2022-07-01T00:55:02.000+00:00",
+				"updated_at": "2022-07-01T00:55:14.000+00:00",
+				"user": {
+					"id": 4,
+					"name": "Inara Lima",
+					"email": "moderador@letscode.com.br"
+				},
+				"wasQuoted": [],
+				"replyComments": [
+					{
+						"id": 2,
+						"content": "respondi esse",
+						"comment_id": 1,
+						"created_at": "2022-07-01T00:55:51.000+00:00",
+						"updated_at": "2022-07-01T00:55:51.000+00:00",
+						"user": {
+							"id": 4,
+							"name": "Inara Lima",
+							"email": "moderador@letscode.com.br"
+						}
+					}
+				],
+				"likeCount": {
+					"like": 1,
+					"unLike": 0
+				}
+			}
+		],
+		"myActiveRating": 9,
+		"movieRating": "9.00"
+	}
+```
 
 #### Avalia um filme, atualizando ou criando uma nota para ele. Retorna um objeto da nota.
 
@@ -209,6 +380,19 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | :-------- | :------- | :----------------------------- |
 | `movieId` | `number` | **Obrigatório**. Id do filme   |
 | `value`   | `number` | **Obrigatório**. nota do filme |
+
+Retorno 200 OK || 400 BadRequest
+
+```javascript
+{
+	"id": 1,
+	"user_id": 4,
+	"movie_id": 1,
+	"value": 9,
+	"created_at": "2022-07-01T00:54:55.000+00:00",
+	"updated_at": "2022-07-01T00:54:55.000+00:00"
+}
+```
 
 #### Posta um comentário em algum filme. Retorna um objeto do comentario enviado.
 
@@ -222,6 +406,28 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | `content`     | `string` | **Obrigatório**. Comentario                                                                             |
 | `wasQuotedId` | `number` | **Opcional**. Id do Comentario Mencionado (caso ele seja Avancado ou Moderador e queira mencionar algum |
 
+Retorno 200 OK || 400 BadRequest
+
+```javascript
+{
+	"movie_id": 1,
+	"content": "Comentário 1",
+	"created_at": "2022-07-01T01:11:27.931+00:00",
+	"updated_at": "2022-07-01T01:11:27.931+00:00",
+	"id": 2,
+	"user": {
+		"id": 4,
+		"name": "Inara Lima",
+		"email": "moderador@letscode.com.br"
+	},
+	"wasQuoted": [],
+	"likeCount": {
+		"like": 0,
+		"unLike": 0
+	}
+}
+```
+
 #### Marca um comentário como repetido (duplicated). Retorna o objeto do comentário.
 
 ```http
@@ -232,6 +438,23 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | :-------- | :------- | :---------------------------------------------------------- |
 | `:id`     | `number` | **Obrigatório**. Id do comentário à sinalizar como repetido |
 
+Retorno 200 OK || 400 BadRequest
+
+```javascript
+{
+	"id": 1,
+	"content": "Comentário 1",
+	"movie_id": 1,
+	"duplicated": true,
+	"created_at": "2022-07-01T00:55:02.000+00:00",
+	"updated_at": "2022-07-01T01:12:02.858+00:00",
+	"likeCount": {
+		"like": 0,
+		"unLike": 0
+	}
+}
+```
+
 #### Apaga um comentário. Retorna uma String de sucesso.
 
 ```http
@@ -241,6 +464,12 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | Parâmetro | Tipo     | Descrição                                                   |
 | :-------- | :------- | :---------------------------------------------------------- |
 | `:id`     | `number` | **Obrigatório**. Id do comentário à sinalizar como repetido |
+
+Retorno 200 OK || 400 BadRequest
+
+```javascript
+"Comentário Apagado com Sucesso";
+```
 
 #### Reage à um comentário (Famoso Like e unLike). Retorna o objeto da reação.
 
@@ -253,6 +482,16 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | `commentId` | `number`               | **Obrigatório**. Id do comentário à Reagir |
 | `type`      | `enu('like','unlike')` | **Obrigatório**. Reação ao comentário      |
 
+Retorno 200 OK || 400 BadRequest
+
+```javascript
+{
+	"comment_id": 2,
+	"type": "like",
+	"id": 2
+}
+```
+
 #### Responder à um comentário. Retorna o objeto da resposta.
 
 ```http
@@ -264,6 +503,23 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | `commentId` | `number` | **Obrigatório**. Id do comentário à responder |
 | `content`   | `string` | **Obrigatório**. Texto da resposta            |
 
+Retorno 200 OK || 400 BadRequest
+
+```javascript
+{
+	"comment_id": 2,
+	"content": "respondi esse",
+	"created_at": "2022-07-01T01:14:23.777+00:00",
+	"updated_at": "2022-07-01T01:14:23.777+00:00",
+	"id": 3,
+	"user": {
+		"id": 4,
+		"name": "Inara Lima",
+		"email": "moderador@letscode.com.br"
+	}
+}
+```
+
 #### Apagar resposta à um comentário. Retorna o objeto da resposta.
 
 ```http
@@ -273,3 +529,9 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 | Parâmetro | Tipo     | Descrição                                              |
 | :-------- | :------- | :----------------------------------------------------- |
 | `:id`     | `number` | **Obrigatório**. Id da resposta do comentário à apagar |
+
+Retorno 200 OK || 400 BadRequest
+
+```javascript
+"Comentário Apagado com Sucesso";
+```

@@ -17,9 +17,9 @@ export default class UpgradeLevelByPointsController {
     //verifica o nivel do user, e caso esteja elegível, faz o upgrade.
     if (user.userPoints >= 1000) {
       user.userLevel = usersLevelsTypes[3]
-    } else if (user.userPoints >= 100 && user.userLevel != usersLevelsTypes[2]) {
+    } else if (user.userPoints >= 100) {
       user.userLevel = usersLevelsTypes[2]
-    } else if (user.userPoints >= 20 && user.userLevel != usersLevelsTypes[1]) {
+    } else if (user.userPoints >= 20) {
       user.userLevel = usersLevelsTypes[1]
     } else {
       return response.json('Usuário não elegível para Upgrade, junte mais Pontos')
