@@ -4,10 +4,11 @@ Está a a API de AUTENTICAÇÃO do Desafio.
 
 também realizei o deploy básico da aplicação, caso queira testar:
 
-```bash
-API Auth
-  http://35.247.213.198:3000/
-```
+
+- API Auth
+  
+http://35.247.213.198:3000/
+
 
 para a criação da API foi utilizado Typescript, com a seguinte Stack:
 
@@ -133,6 +134,7 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 ```http
   POST /register
 ```
+- Rota não autenticada 
 
 | Parâmetro  | Tipo     | Descrição                          |
 | :--------- | :------- | :--------------------------------- |
@@ -157,6 +159,7 @@ Retorno 201
 ```http
   POST /login
 ```
+- Rota não autenticada
 
 | Parâmetro  | Tipo     | Descrição                         |
 | :--------- | :------- | :-------------------------------- |
@@ -188,6 +191,7 @@ Retorno 200
 ```http
   DELETE /auth
 ```
+- Rota autenticada
 
 Retorno 200 OK
 
