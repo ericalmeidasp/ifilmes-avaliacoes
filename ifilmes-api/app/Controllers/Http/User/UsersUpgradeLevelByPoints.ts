@@ -31,7 +31,7 @@ export default class UpgradeLevelByPointsController {
 
     // retorna menssagem de sucesso.
     return response.json({
-      responseText: 'Upgrade de conta realizado com sucesso',
+      userPoints: user.userPoints,
       userLevel: user.userLevel
     })
   }
