@@ -567,3 +567,11 @@ Retorno 200 OK || 400 BadRequest
 ```javascript
 "Comentário Apagado com Sucesso";
 ```
+
+## Testes das rotas
+
+Inclui aqui na pasta raiz, um arquivo Json do Insomnia, caso queira facilitar as criações das rotas para os testes. nele já está o Header Authorization automático com a resposta do login, e tem todas as rotas com os dados necessários.
+
+```bash
+  Insomnia_API-iFilmes.json
+```
