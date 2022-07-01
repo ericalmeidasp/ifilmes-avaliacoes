@@ -42,11 +42,11 @@ Na pasta Raiz do projeto, Rode o Docker compose up para startar o MySQL, Redis e
   docker compose up -d
 ```
 
-Após finalizar as instalações e iniciar a DB, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up) (já subi no git as variáves - .env - para facilitar):
+Após finalizar as instalações e iniciar a DB, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up) (já subi no git as variáves - .env - para facilitar, então, é só rodar :)
 
 ```bash
-  docker exec app node migration:run
-  docker exec app-auth node migration:run
+  docker exec app node ace migration:run
+  docker exec app-auth node ace migration:run
 ```
 
 Rode os Seeders para os testes dos usuários:
@@ -209,42 +209,9 @@ Retorno 200
     poster:
       "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
     type: "movie",
-    comments: [
-      {
-        id: 1,
-        content: "Comentário 1",
-        movie_id: 1,
-        duplicated: 0,
-        created_at: "2022-07-01T00:55:02.000+00:00",
-        updated_at: "2022-07-01T00:55:14.000+00:00",
-        user: {
-          id: 4,
-          name: "Inara Lima",
-          email: "moderador@letscode.com.br",
-        },
-        wasQuoted: [],
-        replyComments: [
-          {
-            id: 2,
-            content: "respondi esse",
-            comment_id: 1,
-            created_at: "2022-07-01T00:55:51.000+00:00",
-            updated_at: "2022-07-01T00:55:51.000+00:00",
-            user: {
-              id: 4,
-              name: "Inara Lima",
-              email: "moderador@letscode.com.br",
-            },
-          },
-        ],
-        likeCount: {
-          like: 1,
-          unLike: 0,
-        },
-      },
-    ],
-    myActiveRating: 9,
-    movieRating: "9.00",
+    comments: [],
+    myActiveRating: null,
+    movieRating: null,
   },
 ];
 ```
@@ -325,49 +292,50 @@ Retorno 200 OK || 400 BadRequest
 
 ```javascript
 {
-		"id": 1,
-		"imdb_id": "tt0848228",
-		"title": "The Avengers",
-		"year": "2012",
-		"poster": "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
-		"type": "movie",
-		"comments": [
-			{
-				"id": 1,
-				"content": "Comentário 1",
-				"movie_id": 1,
-				"duplicated": 0,
-				"created_at": "2022-07-01T00:55:02.000+00:00",
-				"updated_at": "2022-07-01T00:55:14.000+00:00",
-				"user": {
-					"id": 4,
-					"name": "Inara Lima",
-					"email": "moderador@letscode.com.br"
-				},
-				"wasQuoted": [],
-				"replyComments": [
-					{
-						"id": 2,
-						"content": "respondi esse",
-						"comment_id": 1,
-						"created_at": "2022-07-01T00:55:51.000+00:00",
-						"updated_at": "2022-07-01T00:55:51.000+00:00",
-						"user": {
-							"id": 4,
-							"name": "Inara Lima",
-							"email": "moderador@letscode.com.br"
-						}
-					}
-				],
-				"likeCount": {
-					"like": 1,
-					"unLike": 0
-				}
-			}
-		],
-		"myActiveRating": 9,
-		"movieRating": "9.00"
-	}
+    id: 1,
+    imdb_id: "tt0848228",
+    title: "The Avengers",
+    year: "2012",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+    type: "movie",
+    comments: [
+      {
+        id: 1,
+        content: "Comentário 1",
+        movie_id: 1,
+        duplicated: 0,
+        created_at: "2022-07-01T00:55:02.000+00:00",
+        updated_at: "2022-07-01T00:55:14.000+00:00",
+        user: {
+          id: 4,
+          name: "Inara Lima",
+          email: "moderador@letscode.com.br",
+        },
+        wasQuoted: [],
+        replyComments: [
+          {
+            id: 2,
+            content: "respondi esse",
+            comment_id: 1,
+            created_at: "2022-07-01T00:55:51.000+00:00",
+            updated_at: "2022-07-01T00:55:51.000+00:00",
+            user: {
+              id: 4,
+              name: "Inara Lima",
+              email: "moderador@letscode.com.br",
+            },
+          },
+        ],
+        likeCount: {
+          like: 1,
+          unLike: 0,
+        },
+      },
+    ],
+    myActiveRating: 9,
+    movieRating: "9.00",
+  }
 ```
 
 #### Avalia um filme, atualizando ou criando uma nota para ele. Retorna um objeto da nota.
