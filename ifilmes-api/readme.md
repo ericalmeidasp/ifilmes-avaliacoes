@@ -147,24 +147,25 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 
 #### Tabela de parâmetros de autenticação
 
-| Parâmetro Header | Tipo parâmetro | Tipo dado | Descrição                                                              |
-| :--------------- | :------------- | :-------- | :--------------------------------------------------------------------- |
-| `Authorization`  | `Bearer`       | `string`  | **Obrigatório para rotas autenticadas**. Utiliza o padrão => 'Bearer ${token}' |
+| Parâmetro Header | Tipo parâmetro | Tipo dado | Descrição                                                                                                                              |
+| :--------------- | :------------- | :-------- | :------------------------------------------------------------------------------------------------------------------------------------- |
+| `Authorization`  | `Bearer`       | `string`  | **Obrigatório para rotas autenticadas**. Utiliza o padrão => 'Bearer MTU.aKqvAG7GjM4m-5LBsINLnyKKv-NhPwDehSftqFDlCKW-YZ3WB-VhwRRh4aNa' |
 
 #### Tabela de parâmetros permissões (Acess Controll List)
 
-| ACL userLevel | Permissões |  
-| :------------- | :-------- | 
-| `leitor`  | `Leitor` | 
-| `basico`  | `Básico` | 
-| `avancado`  | `Avançado` | 
-| `moderador`  | `Moderador` | 
+| ACL userLevel | Permissões  |
+| :------------ | :---------- |
+| `leitor`      | `Leitor`    |
+| `basico`      | `Básico`    |
+| `avancado`    | `Avançado`  |
+| `moderador`   | `Moderador` |
 
 #### Fazer um cadastro -> Retorna um objeto com dados do usuário
 
 ```http
   POST /user/register
 ```
+
 - Rota não autenticada
 - ACL: leitor,basico,avancado,moderador
 
@@ -192,6 +193,7 @@ Retorno 201
 ```http
   POST /auth
 ```
+
 - Rota não autenticada
 - ACL: leitor,basico,avancado,moderador
 
@@ -212,29 +214,31 @@ Retorno 200
 
 #### Realizar o Logout
 
-
-
 ```http
   DELETE /auth
 ```
+
 - Rota Autenticada
 - ACL: leitor,basico,avancado,moderador
 
 Retorno 200
 
-#### Upgrade do nível da conta (Leitor -> Basico -> Avançado -> Moderador) Por Pontos -> Retorna uma string
+#### Upgrade do nível da conta (Leitor -> Basico -> Avançado -> Moderador) Por Pontos -> Retorna um objeto
 
 ```http
   PUT /user/upgrade
 ```
+
 - Rota Autenticada
 - ACL: leitor,basico,avancado,moderador
 
 Retorno 200
 
 ```javascript
-"Upgrade de conta realizado com sucesso, novo nível: ${userLevel}" ||
-  "Usuário não elegível para Upgrade, junte mais Pontos";
+{
+	"responseText": "Usuário não elegível para Upgrade, junte mais Pontos.",
+	"userPoints": 1
+}
 ```
 
 #### Upgrade do nível da conta (-> Moderador) Por Outra Moderador -> Retorna uma String de sucesso.
@@ -242,6 +246,7 @@ Retorno 200
 ```http
   PUT /user/upgrade/mod
 ```
+
 - Rota Autenticada
 - ACL: moderador
 
@@ -260,6 +265,7 @@ Retorno 200
 ```http
   POST /movies?searchString=string
 ```
+
 - Rota Autenticada
 - ACL: leitor,basico,avancado,moderador
 
@@ -291,6 +297,7 @@ Retorno 200
 ```http
   GET /movies?searchString=string
 ```
+
 - Rota Autenticada
 - ACL: leitor,basico,avancado,moderador
 
@@ -355,6 +362,7 @@ Retorno 200
 ```http
   GET /movies/:id
 ```
+
 - Rota Autenticada
 - ACL: leitor,basico,avancado,moderador
 
@@ -417,6 +425,7 @@ Retorno 200 OK || 400 BadRequest
 ```http
   PUT /rating
 ```
+
 - Rota Autenticada
 - ACL: leitor,basico,avancado,moderador
 
@@ -443,6 +452,7 @@ Retorno 200 OK || 400 BadRequest
 ```http
   POST /comments
 ```
+
 - Rota Autenticada
 - ACL: basico,avancado,moderador
 
@@ -479,6 +489,7 @@ Retorno 200 OK || 400 BadRequest
 ```http
   PUT /comments/:id
 ```
+
 - Rota Autenticada
 - ACL: moderador
 
@@ -508,6 +519,7 @@ Retorno 200 OK || 400 BadRequest
 ```http
   DELETE /comments/:id
 ```
+
 - Rota Autenticada
 - ACL: moderador
 
@@ -526,6 +538,7 @@ Retorno 200 OK || 400 BadRequest
 ```http
   PUT /reactions
 ```
+
 - Rota Autenticada
 - ACL: avancado,moderador
 
@@ -549,6 +562,7 @@ Retorno 200 OK || 400 BadRequest
 ```http
   POST /repliescomments
 ```
+
 - Rota Autenticada
 - ACL: basico,avancado,moderador
 
@@ -579,6 +593,7 @@ Retorno 200 OK || 400 BadRequest
 ```http
   DELETE /repliescomments/:id
 ```
+
 - Rota Autenticada
 - ACL: moderador
 
@@ -591,3 +606,15 @@ Retorno 200 OK || 400 BadRequest
 ```javascript
 "Comentário Apagado com Sucesso";
 ```
+
+## Testes das rotas
+
+Inclui aqui na pasta raiz, um arquivo Json do Insomnia, caso queira facilitar as criações das rotas para os testes. nele já está o Header Authorization automático com a resposta do login, e tem todas as rotas com os dados necessários.
+
+```bash
+  Insomnia_API-iFilmes.json
+```
+Para incluir, é só ir em -> Preferences -> Data -> Import Data -> From File, e selecionar o arquivo json.
+
+## Gratidão.
+Desde já, fica meu muito obrigado por essa oportunidade.
