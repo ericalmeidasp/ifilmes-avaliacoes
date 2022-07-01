@@ -48,17 +48,24 @@ Na pasta Raiz do projeto, Rode o Docker compose up para startar o MySQL, Redis e
   docker compose up -d
 ```
 
-Após finalizar as instalações e iniciar as aplicações, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up) (já subi no git as variáves - .env - para facilitar, então, é só rodar :)
+Após finalizar as instalações e iniciar as aplicações, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up) (já subi no git as variáves - .env - para facilitar, então, é só rodar :) - São 2 migratons, uma para cada API
+
 
 ```bash
   docker exec app node ace migration:run
+```
+
+```bash
   docker exec app-auth node ace migration:run
 ```
 
-Rode os Seeders para os testes dos usuários:
+
+Rode os Seeders para os testes dos usuários: - São 2 seeders, um para cada API
 
 ```bash
   docker exec app node ace db:seed
+```
+```bash
   docker exec app-auth node ace db:seed
 ```
 
