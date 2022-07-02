@@ -9,9 +9,12 @@ também realizei o deploy básico das aplicações, caso queira testar:
 
 API Principal (ifilmes - comentários e avaliações - a de auth está na porta 3000)
 
-- http://35.247.213.198:3333/
+http://35.247.213.198:3333/
 
-- As APIs já estão com os .env configurados para se comunicarem. Todos os cadastros são realizados primeiramente na API principal - de avaliações - (com email e password, API de avaliações não possuem acesso ao password da conta). A autenticação é realizada na API de Autenticação, que retorna o token. Existe um Middleware na API de avaliações responsável por validar o token a cada requisição na API de Autenticação.
+Observações:
+- As APIs já estão com os .env configurados para se comunicarem. Somente a API de autenticação tem acesso ao password da conta, a API principal de avaliações não possui acesso ao password. A Autenticação é realizada na API de Autenticação, que retorna o token. Existe um Middleware na API de avaliações responsável por validar o token na API de Autenticação a cada requisição, invalidando a requisição caso não existe token ou esteja inválido (nas rotas autenticadas).
+
+- O Cache para tentativas de login está na API de Autenticação, responsável por enviar o erro após a 4ª tentativa.
 
 - No final deste readme deixei uma observação quanto à Collection do Insomnia, caso queira utilizar.
 
@@ -27,7 +30,8 @@ API Principal (ifilmes - comentários e avaliações - a de auth está na porta 
 Requisitos ->
 
 - Portas 3333 e 3000 Liberadas.
-- Docker (com Docker Compose)
+- Docker (com Docker Compose).
+- Git.
 - Insomnia (ou Postman) para testes das rotas.
 
 ## Instalação
@@ -579,4 +583,8 @@ Inclui aqui na pasta raiz, um arquivo Json do Insomnia, caso queira facilitar as
 Para incluir, é só ir em -> Preferences -> Data -> Import Data -> From File, e selecionar o arquivo json.
 
 ## Gratidão.
-Desde já, fica meu muito obrigado por essa oportunidade.
+Desde já, fica meu muito obrigado por essa oportunidade íncrivel.
+Foi um projeto sensacional, que trouxe muitos aprendizados, parabéns aos envolvidos.
+e mais uma vez obrigado à toda equipe da LetsCode e Itaú por conduzir esse processo gigante de maneira incrível e organizada.
+
+#### DEUS é bom o tempo todo.
