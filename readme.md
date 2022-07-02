@@ -11,7 +11,9 @@ API Principal (ifilmes - comentários e avaliações - a de auth está na porta 
 
 - http://35.247.213.198:3333/
 
-para a criação da API foi utilizado Typescript, com a seguinte Stack:
+- As APIs já estão com os .env configurados para se comunicarem. Todos os cadastros são realizados primeiramente na API principal - de avaliações - (com email e password, API de avaliações não possuem acesso ao password da conta). A autenticação é realizada na API de Autenticação, que retorna o token. Existe um Middleware na API de avaliações responsável por validar o token a cada requisição na API de Autenticação.
+
+- No final deste readme deixei uma observação quanto à Collection do Insomnia, caso queira utilizar.
 
 ## Stack utilizada
 
@@ -48,7 +50,7 @@ Na pasta Raiz do projeto, Rode o Docker compose up para startar o MySQL, Redis e
   docker compose up -d
 ```
 
-Após finalizar as instalações e iniciar as aplicações, Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up) (já subi no git as variáves - .env - para facilitar, então, é só rodar :) - São 2 migratons, uma para cada API
+Após finalizar os containers e iniciar as aplicações (aguarde a DB estar pronta), Rode as Migrations na pasta raiz (a mesma que rodou o docker compose up) (já subi no git as variáves - .env - para facilitar, então, é só rodar :) - São 2 migrations, uma para cada API
 
 
 ```bash
