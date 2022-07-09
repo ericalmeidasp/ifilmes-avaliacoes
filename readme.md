@@ -154,6 +154,16 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 
 Retorno 201 Created
 
+```javascript
+{
+	"email": "teste@letscode.com.br",
+	"name": "Éric Almeida",
+	"created_at": "2022-07-09T13:19:40.920+00:00",
+	"updated_at": "2022-07-09T13:19:40.920+00:00",
+	"id": 7
+}
+```
+
 #### Realizar o Login -> retorna o token de autorização
 
 ```http
