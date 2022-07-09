@@ -2,12 +2,12 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class AcessControlList {
   public async handle(
-    { auth, response }: HttpContextContract,
+    { request, response }: HttpContextContract,
     next: () => Promise<void>,
     allowedUsersLevel: string
   ) {
     // autentica o usuário utilizando o token
-    const user = await auth.authenticate()
+    const user = request.user
 
     //verificar se o nivel da conta do usuário está nas permissões enviadas pela rota, e retorna erro caso não esteja.
     if (!allowedUsersLevel.includes(user.userLevel)) {

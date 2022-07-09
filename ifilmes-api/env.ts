@@ -29,6 +29,5 @@ export default Env.rules({
   MYSQL_DB_NAME: Env.schema.string(),
   IMDB_API_KEY: Env.schema.string(),
   IMDB_URL: Env.schema.string(),
-  SESSION_DRIVER: Env.schema.string(),
-  API_AUTH_URL: Env.schema.string()
+  API_AUTH_URL: Env.schema.string(),
 })

@@ -29,7 +29,7 @@ export default class AuthController {
       })
 
     // caso de tudo certo, retorna o token e o user
-    return [token, auth.user]
+    return token
   }
 
   /*

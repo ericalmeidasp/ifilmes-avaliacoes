@@ -6,7 +6,7 @@ export default class ReactionsController {
   /*
    * Atualiza ou cria o relacionamento de reação.
    */
-  public async update({ request, response, auth }: HttpContextContract) {
+  public async update({ request, response }: HttpContextContract) {
     try {
       const { type, commentId } = await request.validate(UpdateValidator)
 
@@ -16,11 +16,11 @@ export default class ReactionsController {
       // utiliza o relacionamento para atualizar ou criar a nova reação utilizando os dados enviados e o user autenticado
       const reaction = await comment
         .related('reactions')
-        .updateOrCreate({ commentId, userId: auth.user!.id }, { type })
+        .updateOrCreate({ commentId, userId: request.user.id }, { type })
 
       return reaction
     } catch {
-      return response.badRequest('Verifique os dados enviados')
+      return response.badRequest({ error: { message: 'Verifique os dados enviados' } })
     }
   }
 }

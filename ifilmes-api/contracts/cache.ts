@@ -1,7 +1,0 @@
-import type { InferStoresFromConfig } from '@melchyore/adonis-cache/build/config'
-
-import cacheConfig from '../config/cache'
-
-declare module '@ioc:Adonis/Addons/Cache' {
-  interface CacheStoresList extends InferStoresFromConfig<typeof cacheConfig> {}
-}

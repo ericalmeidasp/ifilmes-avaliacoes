@@ -5,9 +5,9 @@ export default class UpgradeLevelByPointsController {
   /*
    * upgrade da conta utilizando os pontos
    */
-  public async update({ auth, response }: HttpContextContract) {
+  public async update({ request, response }: HttpContextContract) {
     //carrega o user autenticado
-    const user = auth.user!
+    const user = request.user
 
     // verifica se o user já é moderador, e retorna uma string caso seja.
     if (user.userLevel == usersLevelsTypes[3]) {
@@ -24,7 +24,7 @@ export default class UpgradeLevelByPointsController {
     } else {
       return response.json({
         responseText: 'Usuário não elegível para Upgrade, junte mais Pontos.',
-        userPoints: user.userPoints
+        userPoints: user.userPoints,
       })
     }
     user.save()
@@ -32,7 +32,7 @@ export default class UpgradeLevelByPointsController {
     // retorna menssagem de sucesso.
     return response.json({
       userPoints: user.userPoints,
-      userLevel: user.userLevel
+      userLevel: user.userLevel,
     })
   }
 }

@@ -2,13 +2,12 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { StoreValidator } from 'App/Validators/Auth'
 import axios from 'axios'
 import Env from '@ioc:Adonis/Core/Env'
-import { User } from 'App/Models'
 
 export default class AuthController {
   /*
    * Realizar o login na API de Autenticação
    */
-  public async store({ request, response, auth }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
     // valida os campos enviados na request
     const { email, password } = await request.validate(StoreValidator)
 
@@ -16,9 +15,7 @@ export default class AuthController {
     const reqAuth = await axios
       .post(`${Env.get('API_AUTH_URL')}/login`, { email, password })
       .then(async ({ data }) => {
-        const user = await User.firstOrCreate({ email: data[1].email }, { name: data[1].name })
-        await auth.login(user)
-        return data[0]
+        return data
       })
       .catch((error) => {
         return error.response.data

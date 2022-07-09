@@ -7,6 +7,6 @@ import Route from '@ioc:Adonis/Core/Route'
 
 // avalia um filme, utilizando os middlewares ACL e Auth
 Route.put('/rating', 'Movie/Ratings/RatingMain.update').middleware([
-  'acl:leitor,basico,avancado,moderador',
   'auth',
+  'acl:leitor,basico,avancado,moderador',
 ])

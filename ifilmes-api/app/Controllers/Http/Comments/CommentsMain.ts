@@ -8,18 +8,18 @@ export default class CommentsController {
   /*
    * Cria um novo comentário
    */
-  public async store({ request, response, auth }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
     try {
       const { movieId, content, wasQuotedId } = await request.validate(StoreValidator)
 
       //utilizar o user autenticado para criar novo comentário utilizando o relacionamento e os dados enviados
-      const comment = await auth.user!.related('comments').create({ movieId, content })
+      const comment = await request.user.related('comments').create({ movieId, content })
 
       //verifica se o user é avancado ou moderador, caso seja, permite a citação de outro comentario utilizando o dados da req enviados
       if (
         wasQuotedId &&
-        (auth.user!.userLevel === usersLevelsTypes[2] ||
-          auth.user!.userLevel === usersLevelsTypes[3])
+        (request.user.userLevel === usersLevelsTypes[2] ||
+          request.user.userLevel === usersLevelsTypes[3])
       ) {
         await comment.related('wasQuoted').attach([wasQuotedId])
       }
@@ -31,11 +31,11 @@ export default class CommentsController {
       )
 
       //adiciona pontos para o usuário.
-      await PointsService.GivePoints(auth.user!)
+      await PointsService.GivePoints(request.user)
 
       return comment
     } catch {
-      return response.badRequest('Verifique os dados enviados')
+      return response.badRequest({ error: { message: 'Verifique os dados enviados' } })
     }
   }
 
@@ -55,7 +55,7 @@ export default class CommentsController {
       await comment.save()
       return comment
     } catch {
-      return response.badRequest('Verifique os dados enviados')
+      return response.badRequest({ error: { message: 'Verifique os dados enviados' } })
     }
   }
 
@@ -67,9 +67,9 @@ export default class CommentsController {
       const comment = await Comment.findOrFail(params.id)
 
       await comment.delete()
-      return response.json('Comentário Apagado com Sucesso')
+      return response.json({ responseText: 'Comentário Apagado com Sucesso' })
     } catch {
-      return response.badRequest('Verifique os dados enviados')
+      return response.badRequest({ error: { message: 'Verifique os dados enviados' } })
     }
   }
 }

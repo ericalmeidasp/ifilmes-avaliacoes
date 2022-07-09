@@ -6,7 +6,7 @@ export default class MoviesController {
   /*
    * Lista filmes relacionados em nossa DB
    */
-  public async index({ request, response, auth }: HttpContextContract) {
+  public async index({ request, response }: HttpContextContract) {
     try {
       const { searchString } = request.qs()
 
@@ -14,7 +14,7 @@ export default class MoviesController {
       const movies = await Movie.query()
         .where('title', 'like', `%${searchString}%`)
         .preload('rating', (query) =>
-          query.preload('user', (query) => query.where('id', auth.user!.id))
+          query.preload('user', (query) => query.where('id', request.user.id))
         )
         .preload('comments', (query) => {
           query.preload('wasQuoted', (query) =>
@@ -37,14 +37,14 @@ export default class MoviesController {
       // retorna o filme
       return movies
     } catch {
-      return response.badRequest('Por gentileza, verifique os dados enviados')
+      return response.badRequest({ error: { message: 'Verifique os dados enviados' } })
     }
   }
 
   /*
    * Requisita, salva e retorna filmes relacionados
    */
-  public async store({ request, response, auth }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
     try {
       const { searchString } = request.qs()
 
@@ -57,7 +57,7 @@ export default class MoviesController {
       //carrega as informações que temos em nossa DB das lista obtida.
       const queryLoadInfoMovies = salveMoviesInDB.map(async (movie) => {
         await movie.load('rating', (query) =>
-          query.preload('user', (query) => query.where('id', auth.user!.id))
+          query.preload('user', (query) => query.where('id', request.user.id))
         )
         await movie.load('comments', (query) => {
           query.preload('wasQuoted', (query) =>
@@ -86,20 +86,20 @@ export default class MoviesController {
       //retorna as informações da lista obtida
       return salveMoviesInDB
     } catch {
-      return response.badRequest('Por gentileza, verifique os dados enviados')
+      return response.badRequest({ error: { message: 'Verifique os dados enviados' } })
     }
   }
 
   /*
    * Mostra um filme em especifico utilizando o Id
    */
-  public async show({ params, response, auth }: HttpContextContract) {
+  public async show({ request, params, response }: HttpContextContract) {
     try {
       // Busca o filme na base de dados interna
       const movie = await Movie.query()
         .where({ id: params.id })
         .preload('rating', (query) =>
-          query.preload('user', (query) => query.where('id', auth.user!.id))
+          query.preload('user', (query) => query.where('id', request.user.id))
         )
         .preload('comments', (query) => {
           query.preload('wasQuoted', (query) =>
@@ -123,7 +123,7 @@ export default class MoviesController {
       // retorna o filme
       return movie
     } catch {
-      return response.badRequest('Por gentileza, verifique os dados enviados')
+      return response.badRequest({ error: { message: 'Verifique os dados enviados' } })
     }
   }
 }

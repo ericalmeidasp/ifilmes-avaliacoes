@@ -4,8 +4,7 @@
     "./commands",
     "@adonisjs/core/build/commands/index.js",
     "@adonisjs/repl/build/commands",
-    "@adonisjs/lucid/build/commands",
-    "@melchyore/adonis-cache/build/commands"
+    "@adonisjs/lucid/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -21,10 +20,7 @@
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
-    "@adonisjs/lucid",
-    "@adonisjs/auth",
-    "@melchyore/adonis-cache",
-    "@adonisjs/session"
+    "@adonisjs/lucid"
   ],
   "aceProviders": [
     "@adonisjs/repl"

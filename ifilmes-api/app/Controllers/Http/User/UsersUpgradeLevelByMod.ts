@@ -11,18 +11,18 @@ export default class UpgradeLevelByModController {
     try {
       //valida os dados
       const { email } = await request.validate(UpdateValidator)
-  
+
       //busca o usuário pelo email
       const user = await User.findByOrFail('email', email)
-  
+
       //define o level para moderado e salva.
       user.userLevel = usersLevelsTypes[3]
       user.save()
-  
+
       //retorna mensagem de sucesso
       return response.json('Usuário promovido a moderador com sucesso')
     } catch {
-      return response.badRequest('Por gentileza, verifique os dados enviados')
+      return response.badRequest({ error: { message: 'Verifique os dados enviados' } })
     }
   }
 }
