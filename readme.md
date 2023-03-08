@@ -1,4 +1,4 @@
-# API - Projeto BootCamp Itaú Devs Expert - Let's Code.
+# API - Projeto BootCamp Devs Expert - Let's Code.
 
 Está é o Desafio. um sistema para avaliação de filmes, consumindo API pública do IMDB, e salvando avaliações e comentários em nossa DB. Utilizando uma segunda API para autenticação.
 
@@ -39,13 +39,13 @@ Requisitos ->
 Primeiramente Clone o projeto
 
 ```bash
-  git clone https://github.com/ericalmeidasp/desafio-itau.git
+  git clone https://github.com/ericalmeidasp/ifilmes-avaliacoes.git
 ```
 
 Entre na pasta do raiz projeto
 
 ```bash
-  cd desafio-itau
+  cd ifilmes-avaliacoes
 ```
 
 Na pasta Raiz do projeto, Rode o Docker compose up para startar o MySQL, Redis e as duas APIs.
@@ -595,6 +595,6 @@ Para incluir, é só ir em -> Preferences -> Data -> Import Data -> From File, e
 ## Gratidão.
 Desde já, fica meu muito obrigado por essa oportunidade íncrivel.
 Foi um projeto sensacional, que trouxe muitos aprendizados, parabéns aos envolvidos.
-e mais uma vez obrigado à toda equipe da LetsCode e Itaú por conduzir esse processo gigante de maneira incrível e organizada.
+e mais uma vez obrigado à toda equipe da LetsCode e ao Banco por conduzir esse processo gigante de maneira incrível e organizada.
 
 #### DEUS é bom o tempo todo.
