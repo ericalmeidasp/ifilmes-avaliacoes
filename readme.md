@@ -9,8 +9,6 @@ também realizei o deploy básico das aplicações, caso queira testar:
 
 API Principal (ifilmes - comentários e avaliações - a de auth está na porta 3000)
 
-http://35.247.213.198:3333/
-
 Observações:
 - As APIs já estão com os .env configurados para se comunicarem. Somente a API de autenticação armazena password da conta, a API principal de avaliações não armazena o password. A Autenticação é realizada na API de Autenticação, que retorna o token. Existe um Middleware na API de avaliações responsável por validar o token na API de Autenticação a cada requisição, invalidando a requisição caso não exista token ou esteja inválido (nas rotas autenticadas).
 
