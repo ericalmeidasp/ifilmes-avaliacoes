@@ -137,7 +137,7 @@ Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
 #### Fazer um cadastro -> Retorna um objeto com dados do usuário
 
 ```http
-  POST /user/register
+POST /user/register
 ```
 
 - Rota não autenticada
@@ -165,7 +165,7 @@ Retorno 201 Created
 #### Realizar o Login -> retorna o token de autorização
 
 ```http
-  POST /auth
+POST /auth
 ```
 
 - Rota não autenticada
@@ -189,7 +189,7 @@ Retorno 200
 #### Realizar o Logout
 
 ```http
-  DELETE /auth
+DELETE /auth
 ```
 
 - Rota Autenticada
@@ -200,7 +200,7 @@ Retorno 200
 #### Upgrade do nível da conta (Leitor -> Basico -> Avançado -> Moderador) Por Pontos -> Retorna um objeto
 
 ```http
-  PUT /user/upgrade
+PUT /user/upgrade
 ```
 
 - Rota Autenticada
@@ -218,7 +218,7 @@ Retorno 200
 #### Upgrade do nível da conta (-> Moderador) Por Outra Moderador -> Retorna uma String de sucesso.
 
 ```http
-  PUT /user/upgrade/mod
+PUT /user/upgrade/mod
 ```
 
 - Rota Autenticada
@@ -237,7 +237,7 @@ Retorno 200
 #### Obtem Filmes da API IMDB e Salva os Filmes em nossa DB -> Retorna uma Array contendo os principais resultados.
 
 ```http
-  POST /movies?searchString=string
+POST /movies?searchString=string
 ```
 
 - Rota Autenticada
@@ -269,7 +269,7 @@ Retorno 200
 #### Lista os Filmes em nossa DB -> Retorna uma Array contendo os principais resultados.
 
 ```http
-  GET /movies?searchString=string
+GET /movies?searchString=string
 ```
 
 - Rota Autenticada
@@ -334,7 +334,7 @@ Retorno 200
 #### Pesquisa por Filme -> Retorna um objeto com as informações do filme pesquisado e todas informações referentes à ele (avaliações, comentarios, etc.).
 
 ```http
-  GET /movies/:id
+GET /movies/:id
 ```
 
 - Rota Autenticada
@@ -397,7 +397,7 @@ Retorno 200 OK || 400 BadRequest
 #### Avalia um filme, atualizando ou criando uma nota para ele. Retorna um objeto da nota.
 
 ```http
-  PUT /rating
+PUT /rating
 ```
 
 - Rota Autenticada
@@ -424,7 +424,7 @@ Retorno 200 OK || 400 BadRequest
 #### Posta um comentário em algum filme. Retorna um objeto do comentario enviado.
 
 ```http
-  POST /comments
+POST /comments
 ```
 
 - Rota Autenticada
@@ -461,7 +461,7 @@ Retorno 200 OK || 400 BadRequest
 #### Marca um comentário como repetido (duplicated). Retorna o objeto do comentário.
 
 ```http
-  PUT /comments/:id
+PUT /comments/:id
 ```
 
 - Rota Autenticada
@@ -491,7 +491,7 @@ Retorno 200 OK || 400 BadRequest
 #### Apaga um comentário. Retorna uma String de sucesso.
 
 ```http
-  DELETE /comments/:id
+DELETE /comments/:id
 ```
 
 - Rota Autenticada
@@ -510,7 +510,7 @@ Retorno 200 OK || 400 BadRequest
 #### Reage à um comentário (Famoso Like e unLike). Retorna o objeto da reação.
 
 ```http
-  PUT /reactions
+PUT /reactions
 ```
 
 - Rota Autenticada
@@ -534,7 +534,7 @@ Retorno 200 OK || 400 BadRequest
 #### Responder à um comentário. Retorna o objeto da resposta.
 
 ```http
-  POST /repliescomments
+POST /repliescomments
 ```
 
 - Rota Autenticada
@@ -565,7 +565,7 @@ Retorno 200 OK || 400 BadRequest
 #### Apagar resposta à um comentário. Retorna o objeto da resposta.
 
 ```http
-  DELETE /repliescomments/:id
+DELETE /repliescomments/:id
 ```
 
 - Rota Autenticada
@@ -586,7 +586,7 @@ Retorno 200 OK || 400 BadRequest
 Inclui aqui na pasta raiz, um arquivo Json do Insomnia, caso queira facilitar as criações das rotas para os testes. nele já está o Header Authorization automático com a resposta do login, e tem todas as rotas com os dados necessários.
 
 ```bash
-  Insomnia_API-iFilmes.json
+Insomnia_API-iFilmes.json
 ```
 Para incluir, é só ir em -> Preferences -> Data -> Import Data -> From File, e selecionar o arquivo json.
 
