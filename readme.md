@@ -18,7 +18,7 @@ Observações:
 
 ## Stack utilizada
 
-**Back-end:**
+**Back-end: **
 
 - Typescript
 - Framework -> AdonisJS (NodeJs 14).
