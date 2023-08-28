@@ -1,6 +1,6 @@
 # API - Projeto BootCamp Devs Expert - Let's Code. 
 
-Está é o Desafio. um sistema para avaliação de filmes, consumindo API pública do IMDB, e salvando avaliações e comentários em nossa DB. Utilizando uma segunda API para autenticação.
+Está é o Desafio. um sistema para avaliação de filmes, consumindo API pública do IMDB, e salvando avaliações e comentários em nossa DB. Utilizando uma segunda API para autenticação. 
 
 Neste projeto tem um docker-compose.yml, já com todas as imagens necessárias e com o start das duas APIs. Abaixo segue os passos para instalação.
 (caso opte por iniciar o servidor de desenvolvimento das APIs em separado, na pasta de cada API tem o passo-a-passo também)
