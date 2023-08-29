@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: "secret"
       MYSQL_DATABASE: "ifilmes"
     ports:
-      - "3306:3306"
+      - 3306:3306
     network_mode: host
 
   redis-server:
@@ -19,7 +19,7 @@ services:
     container_name: redis-server
     command: /bin/bash -c 'redis-server --requirepass redispw'
     ports:
-      - "6379:6379"
+      - 6379:6379"
     network_mode: host
 
   app:
