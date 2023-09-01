@@ -2,12 +2,7 @@
 
 Está a a API do Desafio. um sistema para avaliação de filmes, consumindo API pública do IMDB, e salvando avaliações e comentários em nossa DB.
 
-também realizei o deploy básico das aplicações, caso queira testar:
-
-
 - API Principal (ifilmes - comentários e avaliações)
-
-http://35.247.213.198:3333/
 
 para a criação da API foi utilizado Typescript, com a seguinte Stack:
 
