@@ -17,7 +17,7 @@ Observações:
 - No final deste readme deixei uma observação quanto à Collection do Insomnia, caso queira utilizar.
 
 ## Stack utilizada
-
+ 
 **Back-end: **
 
 - Typescript
