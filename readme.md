@@ -109,7 +109,6 @@ Ok - Caso um usuário tente 3 vezes logar e erre, na 4 vez deverá ser retornado
 
 #### Existe um Middleware (ACL) para controle dos acessos, seguindos os requisitos.
 
-#
 
 ```
 Com os Seeders, foram criados 4 usuários para testes no sistema, sendo:
