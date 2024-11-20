@@ -1,9 +1,7 @@
-version: "3"
-
 services:
   db:
-    image: mysql
-    container_name: ifilmes
+    image: mysql:5.6
+    container_name: db
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -11,7 +9,6 @@ services:
       MYSQL_DATABASE: "ifilmes"
     ports:
       - 3306:3306
-    network_mode: host
 
   redis-server:
     restart: always
@@ -19,8 +16,7 @@ services:
     container_name: redis-server
     command: /bin/bash -c 'redis-server --requirepass redispw'
     ports:
-      - 6379:6379"
-    network_mode: host
+      - 6379:6379
 
   app:
     container_name: app
@@ -32,7 +28,6 @@ services:
       - db
       - redis-server
       - app-auth
-    network_mode: host
 
   app-auth:
     container_name: app-auth
@@ -43,4 +38,3 @@ services:
     depends_on:
       - db
       - redis-server
-    network_mode: host
